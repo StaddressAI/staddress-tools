@@ -1,6 +1,6 @@
 # Staddress クライアントツール群 開発計画
 
-**版数:** 0.1  
+**版数:** 0.2  
 **作成日:** 2026年6月  
 **参照:** [Staddress API リファレンス](https://staddress.com/api)  
 
@@ -16,12 +16,13 @@
 | # | ツール | 配布形式 | 利用イメージ |
 |---|--------|----------|--------------|
 | 1 | **curl サンプル** | シェルスクリプト | API を試す・CI で smoke test |
-| 2 | **Shell CLI** | `install.sh` / Homebrew（将来） | `staddress parse "..."` |
-| 3 | **Node.js SDK** | npm / yarn | `import { StaddressClient } from '@staddress/client'` |
-| 4 | **Python SDK** | pip / uv | `from staddress import Client` |
-| 5 | **Ruby Gem** | gem | `Staddress::Client.new` |
-| 6 | **Go module**（Phase 5） | go get | `staddress.NewClient()` |
-| 7 | **PHP Composer**（Phase 5） | packagist | 同上 |
+| 2 | **PowerShell サンプル** | `.ps1` スクリプト | Windows で `./staddress.ps1 -Single "..."` |
+| 3 | **Shell CLI** | `install.sh` / Homebrew（将来） | `staddress parse "..."` |
+| 4 | **Node.js SDK** | npm / yarn | `import { StaddressClient } from '@staddress/client'` |
+| 5 | **Python SDK** | pip / uv | `from staddress import Client` |
+| 6 | **Ruby Gem** | gem | `Staddress::Client.new` |
+| 7 | **Go module**（Phase 5） | go get | `staddress.NewClient()` |
+| 8 | **PHP Composer**（Phase 5） | packagist | 同上 |
 
 ---
 
@@ -84,7 +85,7 @@ API エラー形式（[公式仕様](https://staddress.com/api)）:
 
 ## 3. ツール別詳細計画
 
-### 3.1 curl サンプル（Phase 0）✅ 優先
+### 3.1 curl サンプル（Phase 0）✅ 完了
 
 **目的:** API 仕様の検証、ドキュメント、CI smoke test のベース。
 
@@ -104,7 +105,55 @@ API エラー形式（[公式仕様](https://staddress.com/api)）:
 
 ---
 
-### 3.2 Shell CLI — `staddress` コマンド（Phase 1）
+### 3.2 PowerShell サンプル（Phase 0）
+
+**目的:** Windows ユーザーが追加ツール（`curl` / `jq`）なしで API を試せるようにする。PowerShell 標準機能のみで完結。
+
+**配置:** `examples/powershell/`
+
+| ファイル | 内容 |
+|----------|------|
+| `staddress.ps1` | 統合スクリプト（usage / single / batch） |
+| `README.md` | 実行方法・実行ポリシーの説明 |
+
+**対応環境:**
+
+- Windows PowerShell 5.1（Windows 10 / 11 標準搭載）
+- PowerShell 7+（クロスプラットフォーム）
+
+**実装方針:**
+
+- HTTP は `Invoke-RestMethod`（標準コマンドレット、外部依存なし）
+- JSON は `ConvertTo-Json` / `ConvertFrom-Json`（`jq` 不要）
+- 認証ヘッダ `X-Api-Key` を `-Headers` で付与
+- 設定読み込み: リポジトリルートの `.env` を解析、または環境変数 `$env:STADDRESS_API_KEY` / `$env:STADDRESS_BASE_URL`
+- パラメータ: `-Usage` / `-Single <住所> [-PostalCode <code>]` / `-Batch <path>` / `-Help`
+
+**実行例:**
+
+```powershell
+# 利用状況
+./staddress.ps1 -Usage
+
+# 単件解析
+./staddress.ps1 -Single "六本木ヒルズ 森タワー 52F"
+./staddress.ps1 -Single "東京都渋谷区道玄坂1-2 マンション桜 101号" -PostalCode "150-0043"
+
+# 一括解析
+./staddress.ps1 -Batch .\batch-sample.json
+```
+
+**受け入れ基準:**
+
+- Windows 標準の PowerShell 5.1 で追加インストールなしに動作
+- `Invoke-RestMethod` の例外（4xx / 5xx）を捕捉し、API エラー JSON を整形表示
+- API キー未設定時に明確なエラーメッセージ
+- 終了コード（0=成功, 1=APIエラー, 2=設定エラー）
+- 実行ポリシー対策として `pwsh -File ./staddress.ps1 ...` の実行手順を README に明記
+
+---
+
+### 3.3 Shell CLI — `staddress` コマンド（Phase 1）
 
 **目的:** ターミナルから住所解析・利用状況確認を行う。DevOps / 運用向け。
 
@@ -157,7 +206,7 @@ staddress
 
 ---
 
-### 3.3 Node.js SDK（Phase 2）
+### 3.4 Node.js SDK（Phase 2）
 
 **目的:** Web アプリ、サーバーレス、AI エージェント（TypeScript）から利用。
 
@@ -218,7 +267,7 @@ const usage = await client.getUsage();
 
 ---
 
-### 3.4 Python SDK（Phase 3）
+### 3.5 Python SDK（Phase 3）
 
 **目的:** データパイプライン、バッチ処理、FastAPI エージェントから利用。
 
@@ -270,7 +319,7 @@ usage = client.get_usage()
 
 ---
 
-### 3.5 Ruby Gem（Phase 4）
+### 3.6 Ruby Gem（Phase 4）
 
 **目的:** Rails アプリ、Ruby バッチから利用。
 
@@ -316,7 +365,7 @@ usage = client.get_usage
 
 ---
 
-### 3.6 その他言語（Phase 5 — 需要に応じて）
+### 3.7 その他言語（Phase 5 — 需要に応じて）
 
 | 言語 | パッケージ名（案） | 優先度 | 理由 |
 |------|-------------------|--------|------|
@@ -402,7 +451,8 @@ tests/
 
 | フェーズ | 期間 | 成果物 |
 |--------|------|--------|
-| **0** | 2026年6月 第1週 | curl サンプル、OpenAPI、本計画書、README |
+| **0** | 2026年6月 第1週 | curl サンプル、OpenAPI、本計画書、README（完了） |
+| **0** | 2026年6月 第2週 | PowerShell サンプル（Windows 向け） |
 | **1** | 2026年6月 第2–3週 | Shell CLI v0.1（parse / usage / batch） |
 | **2** | 2026年7月 第1–2週 | Node.js SDK v0.1 + npm 公開準備 |
 | **3** | 2026年7月 第3–4週 | Python SDK v0.1 + PyPI 公開準備 |
@@ -427,10 +477,14 @@ staddress-agent/
 ├── openapi/
 │   └── staddress-api.yaml         # OpenAPI 3.1
 ├── examples/
-│   └── curl/
+│   ├── curl/
+│   │   ├── README.md
+│   │   ├── _common.sh
+│   │   ├── batch-sample.json
+│   │   └── staddress.sh
+│   └── powershell/
 │       ├── README.md
-│       ├── _common.sh
-│       └── staddress.sh
+│       └── staddress.ps1
 ├── packages/
 │   ├── cli/
 │   │   ├── README.md
@@ -474,3 +528,4 @@ staddress-agent/
 | 版数 | 日付 | 変更内容 |
 |------|------|----------|
 | 0.1 | 2026-06-19 | 初版（ツール群計画・ディレクトリ構成） |
+| 0.2 | 2026-06-28 | curl サンプル完了。PowerShell サンプル（Windows 向け）の計画を追加 |

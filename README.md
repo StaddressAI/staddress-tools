@@ -11,7 +11,9 @@ staddress-agent/
 ├── README.md                 # 本ファイル
 ├── .env.example              # 環境変数テンプレート
 ├── docs/                     # 設計・計画・仕様書
-├── examples/curl/            # curl サンプル（そのまま実行可能）
+├── examples/
+│   ├── curl/                 # curl サンプル（そのまま実行可能）
+│   └── powershell/           # PowerShell サンプル（Windows 向け・計画中）
 ├── openapi/                  # Staddress API OpenAPI 定義（参照用）
 ├── packages/
 │   ├── cli/                  # staddress シェルコマンド
@@ -58,7 +60,8 @@ staddress batch --file addresses.json
 
 | フェーズ | 内容 | 状態 |
 |--------|------|------|
-| 0 | curl サンプル・OpenAPI・計画書 | 進行中 |
+| 0 | curl サンプル・OpenAPI・計画書 | 完了 |
+| 0 | PowerShell サンプル（Windows 向け） | 計画中 |
 | 1 | Shell CLI (`staddress`) | 未着手 |
 | 2 | Node.js SDK | 未着手 |
 | 3 | Python SDK | 未着手 |
