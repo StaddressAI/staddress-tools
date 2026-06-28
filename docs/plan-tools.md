@@ -114,6 +114,7 @@ API エラー形式（[公式仕様](https://staddress.com/api)）:
 | ファイル | 内容 |
 |----------|------|
 | `staddress.ps1` | 統合スクリプト（usage / single / batch） |
+| `batch-sample.json` | 一括解析用サンプル JSON |
 | `README.md` | 実行方法・実行ポリシーの説明 |
 
 **対応環境:**
@@ -484,6 +485,7 @@ staddress-agent/
 │   │   └── staddress.sh
 │   └── powershell/
 │       ├── README.md
+│       ├── batch-sample.json
 │       └── staddress.ps1
 ├── packages/
 │   ├── cli/
