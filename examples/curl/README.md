@@ -4,13 +4,28 @@ Staddress AI API を curl で呼び出すサンプル集。
 
 ## 前提
 
-1. リポジトリルートで `.env` を作成（`.env.example` をコピー）
-2. `STADDRESS_BASE_URL` と `STADDRESS_API_KEY` を設定
-3. 推奨: [`jq`](https://jqlang.github.io/jq/) をインストール（JSON 整形・単件解析用）
+- 推奨: [`jq`](https://jqlang.github.io/jq/) をインストール（JSON 生成・整形に使用）
+- API キー・接続先は下記「接続設定」を参照（`.env` / 引数 / 対話入力のいずれかで指定）
+
+## 接続設定（API キー・サーバー）
+
+`STADDRESS_API_KEY` と `STADDRESS_BASE_URL` は次の優先順位で解決されます。
+
+1. **コマンドライン引数**（最優先）
+   - `--key <APIキー>` → `STADDRESS_API_KEY`
+   - `--server <ベースURL>` → `STADDRESS_BASE_URL`
+2. **環境変数 / `.env`**（リポジトリルートの `.env` を自動読み込み）
+3. **対話入力**（いずれも未設定なら確認プロンプト。API キーは非表示で入力）
 
 ```bash
-cp ../../.env.example ../../.env
-# .env を編集
+# 1) 引数で指定（環境変数より優先）
+./staddress.sh --server https://api.staddress.com --key sk_xxx -u
+
+# 2) .env で指定（cp ../../.env.example ../../.env して編集）
+./staddress.sh -u
+
+# 3) 何も指定しなければ対話的に入力を求められます
+./staddress.sh -u
 ```
 
 ## 統合スクリプト

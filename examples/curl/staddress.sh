@@ -6,18 +6,24 @@
 #   ./staddress.sh -u | --usage        利用状況を取得
 #   ./staddress.sh -s | --single <住所> [郵便番号]   単件解析
 #   ./staddress.sh -b | --batch <ファイル>   一括解析（JSON ファイル必須）
+#
+# 認証・接続先の指定（優先順位: 引数 > 環境変数 / .env > 対話入力）:
+#   --key <APIキー>        STADDRESS_API_KEY を指定
+#   --server <ベースURL>   STADDRESS_BASE_URL を指定
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck disable=SC1091
+source "${SCRIPT_DIR}/_common.sh"
 
 show_help() {
   cat <<'EOF'
 Staddress AI API — curl サンプル
 
 使い方:
-  ./staddress.sh [オプション] [引数]
+  ./staddress.sh [グローバルオプション] [コマンド] [引数]
 
-オプション:
+コマンド:
   -u, --usage              利用状況を取得 (GET /api/v1/usage)
   -s, --single <住所>      単件住所解析 (POST /api/v1/addresses/parse)
                            任意: 第2引数に郵便番号
@@ -25,8 +31,18 @@ Staddress AI API — curl サンプル
                            JSON ファイルを指定（サンプル: batch-sample.json）
   -h, --help               このメッセージを表示
 
+グローバルオプション（コマンドの前後どちらでも指定可）:
+  --key <APIキー>          STADDRESS_API_KEY を指定（環境変数より優先）
+  --server <ベースURL>     STADDRESS_BASE_URL を指定（環境変数より優先）
+
+認証・接続先の解決順:
+  1. 引数 --key / --server
+  2. 環境変数 / .env の STADDRESS_API_KEY / STADDRESS_BASE_URL
+  3. いずれも無ければ対話入力（API キーは非表示で入力）
+
 例:
   ./staddress.sh -u
+  ./staddress.sh --server https://api.staddress.com --key sk_xxx -u
   ./staddress.sh -s "六本木ヒルズ 森タワー 52F"
   ./staddress.sh --single "東京都渋谷区道玄坂1-2 マンション桜 101号" "150-0043"
   ./staddress.sh -b batch-sample.json
@@ -37,24 +53,15 @@ Staddress AI API — curl サンプル
   ※ 最大100件。postalCode は任意。
 
 前提:
-  1. リポジトリルートに .env を作成（.env.example を参照）
-  2. STADDRESS_BASE_URL / STADDRESS_API_KEY を設定
-  3. jq をインストール（JSON 生成・整形に使用）
+  - jq をインストール（単件・一括の JSON 生成／整形に使用）
 
 公式 API: https://staddress.com/api
 EOF
 }
 
-load_env() {
-  # shellcheck disable=SC1091
-  source "${SCRIPT_DIR}/_common.sh"
-}
-
 cmd_usage() {
-  load_env
-  curl -sS -X GET \
-    "${STADDRESS_BASE_URL}/api/v1/usage" \
-    -H "X-Api-Key: ${STADDRESS_API_KEY}" \
+  staddress_resolve_config
+  staddress_request GET "/api/v1/usage" \
     | staddress_pretty
 }
 
@@ -73,7 +80,7 @@ cmd_single() {
     exit 2
   fi
 
-  load_env
+  staddress_resolve_config
 
   local body
   if [[ -n "${postal_code}" ]]; then
@@ -111,7 +118,7 @@ cmd_batch() {
     exit 2
   fi
 
-  load_env
+  staddress_resolve_config
 
   local body
   if ! body=$(jq -e '
@@ -140,6 +147,21 @@ cmd_batch() {
     -d "${body}" \
     | staddress_pretty
 }
+
+# グローバルオプション（--key / --server）を抽出し、残りを位置引数に戻す
+ARG_API_KEY=""
+ARG_BASE_URL=""
+POSITIONAL=()
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --key)      ARG_API_KEY="${2:-}"; shift 2 ;;
+    --key=*)    ARG_API_KEY="${1#*=}"; shift ;;
+    --server)   ARG_BASE_URL="${2:-}"; shift 2 ;;
+    --server=*) ARG_BASE_URL="${1#*=}"; shift ;;
+    *)          POSITIONAL+=("$1"); shift ;;
+  esac
+done
+set -- ${POSITIONAL[@]+"${POSITIONAL[@]}"}
 
 # メイン
 if [[ $# -eq 0 ]]; then
