@@ -3,7 +3,6 @@
 Staddress AI（ストアドレス）住所解析サービス向けの **クライアントツール群** および **汎用 AI エージェント** の開発リポジトリ。
 
 - 公式 API 仕様: [https://staddress.com/api](https://staddress.com/api)
-- 契約要件: `../outsourcing_contract_staddress_ai_2026_attachment1.md`
 
 ## リポジトリ構成
 
@@ -19,7 +18,7 @@ staddress-agent/
 │   ├── node/                 # Node.js SDK (@staddress/client)
 │   ├── python/               # Python SDK (staddress)
 │   └── ruby/                 # Ruby Gem (staddress)
-├── agent/                    # 汎用 AI エージェント（別紙1 スコープ）
+├── agent/                    # 汎用 AI エージェント
 └── tests/                    # 横断テスト・フィクスチャ
 ```
 
@@ -69,4 +68,4 @@ staddress batch --file addresses.json
 
 ## ライセンス
 
-契約に従い、納品時に確定する。
+[MIT License](LICENSE) © 2026 StaddressAI

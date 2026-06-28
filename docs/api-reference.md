@@ -83,12 +83,3 @@ CSV アップロード／ダウンロード（`/api/v1/csv/upload`・`/api/v1/cs
 | `not_found` | 404 | リソースなし |
 | `unresolved` | 422 | 住所解析不能 |
 | `internal_error` | 500 | サーバーエラー |
-
-## 別紙1 との対応
-
-| 別紙1 要件 | API |
-|------------|-----|
-| 5.1.1 単件住所解析 | POST `/api/v1/addresses/parse` |
-| 5.1.2 一括住所解析 | POST `/api/v1/addresses/parse/batch` |
-| 5.1.3 信頼度評価 | `result.confidence`（ABR 照合） |
-| 5.1.4 エラーハンドリング | 上記エラーコード + SDK 例外 |
