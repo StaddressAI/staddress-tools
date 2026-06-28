@@ -1,0 +1,112 @@
+name: smoke
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  powershell:
+    name: PowerShell (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Syntax check (Windows PowerShell 5.1)
+        if: runner.os == 'Windows'
+        shell: powershell
+        run: |
+          $errs = $null
+          [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path .\examples\powershell\staddress.ps1).Path, [ref]$null, [ref]$errs) | Out-Null
+          if ($errs) { $errs | ForEach-Object { $_.Message }; exit 1 }
+          Write-Host "Windows PowerShell 5.1 syntax OK"
+
+      - name: Syntax check (pwsh 7)
+        shell: pwsh
+        run: |
+          $errs = $null
+          [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path ./examples/powershell/staddress.ps1).Path, [ref]$null, [ref]$errs) | Out-Null
+          if ($errs) { $errs | ForEach-Object { $_.Message }; exit 1 }
+          Write-Host "pwsh 7 syntax OK"
+
+      - name: Static analysis (PSScriptAnalyzer)
+        shell: pwsh
+        run: |
+          Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+          Install-Module PSScriptAnalyzer -Scope CurrentUser -Force
+          $issues = Invoke-ScriptAnalyzer -Path ./examples/powershell/staddress.ps1 -Severity Error,Warning
+          $issues | Format-Table -AutoSize
+          if ($issues | Where-Object { $_.Severity -eq 'Error' }) {
+            Write-Error "PSScriptAnalyzer reported errors"
+            exit 1
+          }
+
+      - name: Help smoke (pwsh 7)
+        shell: pwsh
+        run: ./examples/powershell/staddress.ps1 -Help
+
+      - name: Help smoke (Windows PowerShell 5.1)
+        if: runner.os == 'Windows'
+        shell: powershell
+        run: .\examples\powershell\staddress.ps1 -Help
+
+      - name: Live API smoke (optional, requires secret)
+        shell: pwsh
+        env:
+          STADDRESS_API_KEY: ${{ secrets.STADDRESS_API_KEY }}
+          STADDRESS_BASE_URL: ${{ secrets.STADDRESS_BASE_URL }}
+        run: |
+          if ([string]::IsNullOrWhiteSpace($env:STADDRESS_API_KEY)) {
+            Write-Host "STADDRESS_API_KEY secret not set; skipping live test"
+            exit 0
+          }
+          if ([string]::IsNullOrWhiteSpace($env:STADDRESS_BASE_URL)) {
+            $env:STADDRESS_BASE_URL = 'https://api.staddress.com'
+          }
+          ./examples/powershell/staddress.ps1 -Usage
+
+  curl:
+    name: curl sample (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Bash syntax check
+        run: |
+          bash -n examples/curl/_common.sh
+          bash -n examples/curl/staddress.sh
+          echo "bash syntax OK"
+
+      - name: ShellCheck (non-blocking)
+        run: |
+          if command -v shellcheck >/dev/null 2>&1; then
+            shellcheck examples/curl/staddress.sh examples/curl/_common.sh || true
+          else
+            echo "shellcheck not available; skipping"
+          fi
+
+      - name: Help smoke
+        run: |
+          chmod +x examples/curl/staddress.sh
+          ./examples/curl/staddress.sh -h
+
+      - name: Live API smoke (optional, requires secret)
+        env:
+          STADDRESS_API_KEY: ${{ secrets.STADDRESS_API_KEY }}
+          STADDRESS_BASE_URL: ${{ secrets.STADDRESS_BASE_URL }}
+        run: |
+          if [ -z "${STADDRESS_API_KEY}" ]; then
+            echo "STADDRESS_API_KEY secret not set; skipping live test"
+            exit 0
+          fi
+          export STADDRESS_BASE_URL="${STADDRESS_BASE_URL:-https://api.staddress.com}"
+          ./examples/curl/staddress.sh -u
