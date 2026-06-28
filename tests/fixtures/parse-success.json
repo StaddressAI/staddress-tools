@@ -1,0 +1,25 @@
+{
+  "result": {
+    "normalized": "東京都港区六本木6丁目10-1 六本木ヒルズ森タワー 52F",
+    "standard": "東京都港区六本木六丁目10-1 六本木ヒルズ森タワー 52F",
+    "components": {
+      "pref": "東京都",
+      "prefCode": "13",
+      "city": "港区",
+      "cityCode": "13103",
+      "oazaCho": "六本木",
+      "chomeKoaza": "6丁目",
+      "streetNumberBlock": "10-1",
+      "buildingName": "六本木ヒルズ森タワー",
+      "roomNumber": "52",
+      "roomNumberUnit": "F",
+      "lat": 35.6604,
+      "lon": 139.7292
+    },
+    "confidence": {
+      "score": 0.92,
+      "matchLevel": "residential_detail",
+      "query": "東京都港区六本木6丁目10-1"
+    }
+  }
+}

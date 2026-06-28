@@ -1,0 +1,17 @@
+.env
+.env.local
+*.pem
+node_modules/
+dist/
+build/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.ruff_cache/
+.mypy_cache/
+coverage/
+.nyc_output/
+*.log
+.DS_Store

@@ -1,0 +1,292 @@
+openapi: 3.1.0
+info:
+  title: Staddress AI API
+  description: |
+    Staddress AI 住所解析サービス API。
+    公式ドキュメント: https://staddress.com/api
+  version: 1.0.0
+
+servers:
+  - url: "{baseUrl}"
+    variables:
+      baseUrl:
+        default: https://api.staddress.com
+        description: 契約時または管理画面で確認するベース URL
+
+security:
+  - ApiKeyAuth: []
+
+paths:
+  /api/v1/usage:
+    get:
+      operationId: getUsage
+      summary: 利用状況の取得
+      tags: [Usage]
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsageResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /api/v1/addresses/parse:
+    post:
+      operationId: parseAddress
+      summary: 住所の解析（単一）
+      tags: [Address]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ParseRequest"
+      responses:
+        "200":
+          description: 解析成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ParseResponse"
+        "422":
+          description: 解析不能
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ParseErrorResponse"
+
+  /api/v1/addresses/parse/batch:
+    post:
+      operationId: parseBatch
+      summary: 住所の解析（一括）
+      description: Standard プラン以上。最大100件。
+      tags: [Address]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BatchParseRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BatchParseResponse"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-Api-Key
+
+  responses:
+    Unauthorized:
+      description: API キー無効
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    Forbidden:
+      description: プラン権限なし
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+
+  schemas:
+    ParseRequest:
+      type: object
+      required: [input]
+      properties:
+        input:
+          type: string
+          maxLength: 100
+          description: 解析対象の住所文字列
+        postalCode:
+          type: string
+          maxLength: 8
+          description: 郵便番号（任意）
+
+    ParseResponse:
+      type: object
+      required: [result]
+      properties:
+        result:
+          $ref: "#/components/schemas/ParseResult"
+
+    ParseErrorResponse:
+      type: object
+      properties:
+        result:
+          type: "null"
+        error:
+          $ref: "#/components/schemas/ErrorBody"
+
+    ParseResult:
+      type: object
+      properties:
+        normalized:
+          type: string
+        standard:
+          type: string
+        components:
+          $ref: "#/components/schemas/AddressComponents"
+        confidence:
+          $ref: "#/components/schemas/Confidence"
+
+    AddressComponents:
+      type: object
+      properties:
+        pref: { type: string }
+        prefCode: { type: string }
+        city: { type: string }
+        cityCode: { type: string }
+        oazaCho: { type: string }
+        chomeKoaza: { type: string }
+        chomeKoazaNormalized: { type: string }
+        chomeNumber: { type: string }
+        streetNumberBlock: { type: string }
+        buildingName: { type: string }
+        roomNumber: { type: string }
+        roomNumberUnit: { type: string }
+        lon: { type: number }
+        lat: { type: number }
+        lgCode: { type: string }
+        machiazaId: { type: string }
+
+    Confidence:
+      type: object
+      properties:
+        score:
+          type: number
+          minimum: 0
+          maximum: 1
+        matchLevel:
+          type: string
+          enum:
+            - prefecture
+            - city
+            - machiaza
+            - residential_block
+            - residential_detail
+            - parcel
+            - unknown
+            - error
+            - ""
+        query:
+          type: string
+
+    BatchParseRequest:
+      type: object
+      required: [items]
+      properties:
+        items:
+          type: array
+          maxItems: 100
+          items:
+            $ref: "#/components/schemas/BatchItemInput"
+
+    BatchItemInput:
+      type: object
+      required: [id, address]
+      properties:
+        id:
+          type: string
+          maxLength: 100
+        address:
+          type: string
+          maxLength: 100
+        postalCode:
+          type: string
+          maxLength: 8
+
+    BatchParseResponse:
+      type: object
+      required: [results]
+      properties:
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/BatchItemResult"
+
+    BatchItemResult:
+      type: object
+      required: [id]
+      properties:
+        id:
+          type: string
+        result:
+          $ref: "#/components/schemas/ParseResult"
+        error:
+          $ref: "#/components/schemas/ErrorBody"
+
+    UsageResponse:
+      type: object
+      properties:
+        accountName:
+          type: string
+        plan:
+          type: string
+        usage:
+          type: object
+          properties:
+            period:
+              type: object
+              nullable: true
+              properties:
+                start: { type: string, format: date }
+                end: { type: string, format: date }
+            count: { type: number }
+            monthlyLimit: { type: number }
+            contractPeriodRemaining:
+              type: number
+              nullable: true
+            credits:
+              type: array
+              items:
+                type: object
+                properties:
+                  validUntil: { type: string, format: date }
+                  totalAmount: { type: number }
+                  usedAmount: { type: number }
+                  remaining: { type: number }
+
+    ErrorResponse:
+      type: object
+      required: [error]
+      properties:
+        error:
+          $ref: "#/components/schemas/ErrorBody"
+
+    ErrorBody:
+      type: object
+      required: [code, message]
+      properties:
+        code:
+          type: string
+          enum:
+            - invalid_request
+            - batch_size_exceeded
+            - unauthorized
+            - quota_exceeded
+            - forbidden
+            - not_found
+            - processing
+            - csv_upload_limit_exceeded
+            - file_too_large
+            - unresolved
+            - internal_error
+        message:
+          type: string
+        requestId:
+          type: string
+        retryAfter:
+          type: string
+          format: date-time

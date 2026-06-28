@@ -1,0 +1,27 @@
+{
+  "name": "@staddress/client",
+  "version": "0.0.0",
+  "description": "Official Node.js client for Staddress AI address parsing API",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "echo 'TODO: implement build'",
+    "test": "echo 'TODO: implement tests'",
+    "lint": "echo 'TODO: implement lint'"
+  },
+  "keywords": ["staddress", "address", "geocoding", "japan"],
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=18"
+  }
+}
