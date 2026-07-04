@@ -20,6 +20,6 @@ alwaysApply: true
 ## このリポジトリの前提
 
 - GitHub アカウントは **`nexus-changchun`**（他プロジェクトとは別 ID）。コミット著者はリポジトリ単位の `--local` 設定（`nexus-changchun` / `nexus@staddress.com`）。
-- リモート: `https://nexus-changchun@github.com/StaddressAI/staddress-agent.git`、`credential.helper = osxkeychain`（local）。push 認証はこの設定に委ねる。
+- リモート: `https://nexus-changchun@github.com/StaddressAI/staddress-tools.git`、`credential.helper = osxkeychain`（local）。push 認証はこの設定に委ねる。
 - **一般公開リポジトリ**。契約・受託・社内限定の情報（「別紙」「甲／乙」「納品」「検収」「契約書ファイル参照」等）をコミットに含めない。
 - ライセンスは **MIT**。

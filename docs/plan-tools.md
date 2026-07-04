@@ -164,7 +164,7 @@ API エラー形式（[公式仕様](https://staddress.com/api)）:
 
 ```bash
 # 方法 A: install スクリプト
-curl -fsSL https://raw.githubusercontent.com/StaddressAI/staddress-agent/main/packages/cli/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/StaddressAI/staddress-tools/main/packages/cli/install.sh | bash
 
 # 方法 B: リポジトリからローカルインストール
 cd packages/cli && ./install.sh
@@ -467,7 +467,7 @@ tests/
 ## 7. ディレクトリ詳細（確定版）
 
 ```
-staddress-agent/
+staddress-tools/
 ├── README.md
 ├── .env.example
 ├── .gitignore
