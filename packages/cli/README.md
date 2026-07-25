@@ -8,9 +8,12 @@
 
 ## インストール
 
+CLI は `bin/staddress` と `lib/*.sh` の複数ファイル構成のため、リポジトリを clone してインストールします（`curl ... install.sh | bash` の単体パイプ実行は不可）。
+
 ```bash
-# リポジトリからローカルインストール（~/.local/bin または /usr/local/bin に symlink）
-cd packages/cli && ./install.sh
+# リポジトリを clone してローカルインストール（~/.local/bin または /usr/local/bin に symlink）
+git clone https://github.com/StaddressAI/staddress-tools.git
+cd staddress-tools/packages/cli && ./install.sh
 
 # 配置先を指定する場合
 ./install.sh --prefix /usr/local/bin

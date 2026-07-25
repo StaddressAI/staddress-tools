@@ -167,18 +167,19 @@ API エラー形式（[公式仕様](https://staddress.com/api)）:
 - `install.sh`（`~/.local/bin` または `/usr/local/bin` へ symlink、`--prefix` / `--uninstall` 対応）
 - `tests/run.sh`（curl をモック化した実 API 不要の単体テスト、18 ケース）
 
-**インストール方法（案）:**
+**インストール方法:**
 
 ```bash
-# 方法 A: install スクリプト
-curl -fsSL https://raw.githubusercontent.com/StaddressAI/staddress-tools/main/packages/cli/install.sh | bash
+# 方法 A: リポジトリを clone してローカルインストール
+#   （CLI は bin/staddress と lib/*.sh の複数ファイル構成のため、リポジトリ一式が必要）
+git clone https://github.com/StaddressAI/staddress-tools.git
+cd staddress-tools/packages/cli && ./install.sh
 
-# 方法 B: リポジトリからローカルインストール
-cd packages/cli && ./install.sh
-
-# 方法 C（将来）: Homebrew
+# 方法 B（将来）: Homebrew
 brew install staddress/tap/staddress
 ```
+
+> 注: `install.sh` は同じディレクトリの `bin`・`lib` を配置先へ symlink するため、`curl ... install.sh | bash` の単体パイプ実行では動作しません。上記の clone 手順を使用してください。
 
 **コマンド設計:**
 
