@@ -70,6 +70,46 @@ jobs:
           }
           ./examples/powershell/staddress.ps1 -Usage
 
+  cli:
+    name: shell CLI (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Ensure jq
+        run: |
+          if ! command -v jq >/dev/null 2>&1; then
+            if command -v brew >/dev/null 2>&1; then brew install jq; else sudo apt-get update && sudo apt-get install -y jq; fi
+          fi
+          jq --version
+
+      - name: Bash syntax check
+        run: |
+          for f in packages/cli/bin/staddress packages/cli/lib/*.sh packages/cli/install.sh packages/cli/tests/run.sh; do
+            bash -n "$f"
+          done
+          echo "bash syntax OK"
+
+      - name: ShellCheck (non-blocking)
+        run: |
+          if command -v shellcheck >/dev/null 2>&1; then
+            shellcheck -e SC1090,SC1091 packages/cli/bin/staddress packages/cli/lib/*.sh packages/cli/install.sh || true
+          else
+            echo "shellcheck not available; skipping"
+          fi
+
+      - name: Unit tests (mocked curl)
+        run: ./packages/cli/tests/run.sh
+
+      - name: Install smoke
+        run: |
+          ./packages/cli/install.sh --prefix "$HOME/.local/bin"
+          "$HOME/.local/bin/staddress" version
+
   curl:
     name: curl sample (${{ matrix.os }})
     strategy:

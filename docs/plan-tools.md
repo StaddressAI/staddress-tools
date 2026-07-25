@@ -1,6 +1,6 @@
 # Staddress クライアントツール群 開発計画
 
-**版数:** 0.2  
+**版数:** 0.3  
 **作成日:** 2026年6月  
 **参照:** [Staddress API リファレンス](https://staddress.com/api)  
 
@@ -154,11 +154,18 @@ API エラー形式（[公式仕様](https://staddress.com/api)）:
 
 ---
 
-### 3.3 Shell CLI — `staddress` コマンド（Phase 1）
+### 3.3 Shell CLI — `staddress` コマンド（Phase 1）✅ v0.1 実装済み
 
 **目的:** ターミナルから住所解析・利用状況確認を行う。DevOps / 運用向け。
 
 **配置:** `packages/cli/`
+
+**実装状況（v0.1）:**
+
+- `bin/staddress`（エントリポイント、symlink 経由の呼び出しに対応）
+- `lib/`（設定解決・HTTP・エラー処理・`parse` / `batch` / `usage` / `config` サブコマンド）
+- `install.sh`（`~/.local/bin` または `/usr/local/bin` へ symlink、`--prefix` / `--uninstall` 対応）
+- `tests/run.sh`（curl をモック化した実 API 不要の単体テスト、18 ケース）
 
 **インストール方法（案）:**
 
@@ -201,9 +208,9 @@ staddress
 
 **受け入れ基準:**
 
-- `staddress parse "六本木ヒルズ 森タワー 52F"` が JSON を返す
-- API キー未設定時に明確なエラーメッセージ
-- `--help` / 終了コード（0=成功, 1=APIエラー, 2=設定エラー）
+- `staddress parse "六本木ヒルズ 森タワー 52F"` が JSON を返す ✅
+- API キー未設定時に明確なエラーメッセージ ✅
+- `--help` / 終了コード（0=成功, 1=APIエラー, 2=設定エラー）✅
 
 ---
 
@@ -453,8 +460,8 @@ tests/
 | フェーズ | 期間 | 成果物 |
 |--------|------|--------|
 | **0** | 2026年6月 第1週 | curl サンプル、OpenAPI、本計画書、README（完了） |
-| **0** | 2026年6月 第2週 | PowerShell サンプル（Windows 向け） |
-| **1** | 2026年6月 第2–3週 | Shell CLI v0.1（parse / usage / batch） |
+| **0** | 2026年6月 第2週 | PowerShell サンプル（Windows 向け）（完了） |
+| **1** | 2026年6月 第2–3週 | Shell CLI v0.1（parse / usage / batch / config）（完了） |
 | **2** | 2026年7月 第1–2週 | Node.js SDK v0.1 + npm 公開準備 |
 | **3** | 2026年7月 第3–4週 | Python SDK v0.1 + PyPI 公開準備 |
 | **4** | 2026年8月 第1週 | Ruby Gem v0.1 |
@@ -492,7 +499,8 @@ staddress-tools/
 │   │   ├── README.md
 │   │   ├── install.sh
 │   │   ├── bin/staddress
-│   │   └── lib/
+│   │   ├── lib/                   # common.sh, cmd_parse.sh, cmd_batch.sh, cmd_usage.sh, cmd_config.sh
+│   │   └── tests/run.sh
 │   ├── node/
 │   │   ├── README.md
 │   │   ├── package.json
@@ -531,3 +539,4 @@ staddress-tools/
 |------|------|----------|
 | 0.1 | 2026-06-19 | 初版（ツール群計画・ディレクトリ構成） |
 | 0.2 | 2026-06-28 | curl サンプル完了。PowerShell サンプル（Windows 向け）の計画を追加 |
+| 0.3 | 2026-07-25 | Shell CLI v0.1 実装完了（parse / batch / usage / config、install.sh、単体テスト） |

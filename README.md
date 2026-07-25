@@ -61,16 +61,22 @@ source .env
 
 詳細は [`examples/powershell/`](examples/powershell/) を参照。
 
-### SDK / CLI（開発予定）
+### Shell CLI（`staddress`）
 
-各言語の SDK と Shell CLI を順次提供予定です（[開発ロードマップ](#開発ロードマップ) を参照）。
+ターミナル向けの `staddress` コマンドを提供しています（詳細: [`packages/cli/`](packages/cli/)）。
 
 ```bash
-# 例: Shell CLI（予定）
+cd packages/cli && ./install.sh
+staddress config set api-key <あなたのキー>
+
 staddress parse "東京都渋谷区道玄坂1-2 マンション桜 101号"
 staddress usage
 staddress batch --file addresses.json
 ```
+
+### 各言語 SDK（開発予定）
+
+Node.js / Python / Ruby などの SDK を順次提供予定です（[開発ロードマップ](#開発ロードマップ) を参照）。
 
 ## 開発ロードマップ
 
@@ -79,8 +85,8 @@ staddress batch --file addresses.json
 | フェーズ | 内容 | 状態 |
 |--------|------|------|
 | 1 | curl サンプル | 完了 |
-| 2 | PowerShell サンプル（Windows 向け） | 計画中 |
-| 3 | Shell CLI (`staddress`) | 未着手 |
+| 2 | PowerShell サンプル（Windows 向け） | 完了 |
+| 3 | Shell CLI (`staddress`) | 完了 (v0.1) |
 | 4 | Node.js SDK | 未着手 |
 | 5 | Python SDK | 未着手 |
 | 6 | Ruby SDK | 未着手 |

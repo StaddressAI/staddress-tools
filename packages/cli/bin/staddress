@@ -1,0 +1,124 @@
+#!/usr/bin/env bash
+# =============================================================================
+# staddress — Staddress AI API コマンドラインツール
+#
+#   staddress parse <住所> [-p <郵便番号>] [--pretty]
+#   staddress batch (--file <path> | --stdin)
+#   staddress usage [--pretty]
+#   staddress config set <api-key|base-url|timeout> <値>
+#   staddress config show
+#   staddress version
+#
+# 公式 API: https://staddress.com/api
+# =============================================================================
+set -euo pipefail
+
+STADDRESS_CLI_VERSION="0.1.0"
+
+# --- スクリプト自身の実体パスを解決（symlink 経由の呼び出しに対応） ----------
+staddress_resolve_self() {
+  local src="${BASH_SOURCE[0]}" dir
+  while [[ -h "${src}" ]]; do
+    dir="$(cd -P "$(dirname "${src}")" >/dev/null 2>&1 && pwd)"
+    src="$(readlink "${src}")"
+    [[ "${src}" != /* ]] && src="${dir}/${src}"
+  done
+  cd -P "$(dirname "${src}")" >/dev/null 2>&1 && pwd
+}
+
+BIN_DIR="$(staddress_resolve_self)"
+LIB_DIR="$(cd "${BIN_DIR}/../lib" >/dev/null 2>&1 && pwd)"
+
+if [[ -z "${LIB_DIR}" || ! -f "${LIB_DIR}/common.sh" ]]; then
+  echo "Error: ライブラリが見つかりません（${BIN_DIR}/../lib/common.sh）。インストールが壊れている可能性があります。" >&2
+  exit 2
+fi
+
+# shellcheck source=../lib/common.sh
+source "${LIB_DIR}/common.sh"
+# shellcheck source=../lib/cmd_parse.sh
+source "${LIB_DIR}/cmd_parse.sh"
+# shellcheck source=../lib/cmd_batch.sh
+source "${LIB_DIR}/cmd_batch.sh"
+# shellcheck source=../lib/cmd_usage.sh
+source "${LIB_DIR}/cmd_usage.sh"
+# shellcheck source=../lib/cmd_config.sh
+source "${LIB_DIR}/cmd_config.sh"
+
+show_help() {
+  cat <<EOF
+staddress ${STADDRESS_CLI_VERSION} — Staddress AI API コマンドラインツール
+
+使い方:
+  staddress <コマンド> [引数] [オプション]
+
+コマンド:
+  parse <住所>        単件住所解析          (POST /api/v1/addresses/parse)
+  batch               一括住所解析          (POST /api/v1/addresses/parse/batch)
+  usage               利用状況を取得        (GET  /api/v1/usage)
+  config              設定ファイルの管理
+  version             バージョンを表示
+  help                このヘルプを表示
+
+グローバルオプション（コマンドの前に指定）:
+  --api-key <key>     API キーを指定（環境変数・設定ファイルより優先）
+  --base-url <url>    ベース URL を指定（同上）
+
+設定の解決順:
+  1. コマンドフラグ (--api-key / --base-url)
+  2. 環境変数 (STADDRESS_API_KEY / STADDRESS_BASE_URL)
+  3. 設定ファイル (~/.config/staddress/config)
+  4. 既定 (base-url: ${DEFAULT_BASE_URL})
+
+例:
+  staddress config set api-key sk_xxx
+  staddress parse "六本木ヒルズ 森タワー 52F"
+  staddress parse "東京都渋谷区道玄坂1-2" -p 150-0043 --pretty
+  staddress batch --file addresses.json
+  staddress usage --pretty
+
+各コマンドの詳細は 'staddress <コマンド> --help' を参照。
+公式 API: https://staddress.com/api
+EOF
+}
+
+# --- グローバルオプションを抽出 ----------------------------------------------
+ARG_API_KEY=""
+ARG_BASE_URL=""
+OUTPUT_MODE="json"
+POSITIONAL=()
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --api-key)   ARG_API_KEY="${2:-}"; shift 2 ;;
+    --api-key=*) ARG_API_KEY="${1#*=}"; shift ;;
+    --base-url)   ARG_BASE_URL="${2:-}"; shift 2 ;;
+    --base-url=*) ARG_BASE_URL="${1#*=}"; shift ;;
+    --)          shift; while [[ $# -gt 0 ]]; do POSITIONAL+=("$1"); shift; done ;;
+    *)           POSITIONAL+=("$1"); shift ;;
+  esac
+done
+set -- ${POSITIONAL[@]+"${POSITIONAL[@]}"}
+
+if [[ $# -eq 0 ]]; then
+  show_help
+  exit 0
+fi
+
+command="$1"
+shift
+
+case "${command}" in
+  parse)              cmd_parse "$@" ;;
+  batch)              cmd_batch "$@" ;;
+  usage)              cmd_usage "$@" ;;
+  config)             cmd_config "$@" ;;
+  version|--version|-v) echo "staddress ${STADDRESS_CLI_VERSION}" ;;
+  help|--help|-h)     show_help ;;
+  *)
+    echo "Error: 不明なコマンド: ${command}" >&2
+    echo >&2
+    show_help >&2
+    exit 2
+    ;;
+esac
