@@ -85,8 +85,8 @@ Node.js / Python / Ruby などの SDK を順次提供予定です（[開発ロ�
 | フェーズ | 内容 | 状態 |
 |--------|------|------|
 | 1 | curl サンプル | 完了 |
-| 2 | PowerShell サンプル（Windows 向け） | 完了 |
-| 3 | Shell CLI (`staddress`) | 完了 (v0.1) |
+| 2 | PowerShell サンプル | 完了 |
+| 3 | Shell CLI | 完了 |
 | 4 | Node.js SDK | 未着手 |
 | 5 | Python SDK | 未着手 |
 | 6 | Ruby SDK | 未着手 |
