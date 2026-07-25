@@ -1,6 +1,6 @@
 {
   "name": "@staddress/client",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Official Node.js client for Staddress AI address parsing API",
   "author": "StaddressAI",
   "homepage": "https://staddress.com/api",
@@ -17,6 +17,7 @@
     "provenance": true
   },
   "type": "module",
+  "sideEffects": false,
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",

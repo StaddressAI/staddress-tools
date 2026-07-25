@@ -1,13 +1,20 @@
 # @staddress/client
 
+[![npm version](https://img.shields.io/npm/v/@staddress/client.svg)](https://www.npmjs.com/package/@staddress/client)
+[![npm downloads](https://img.shields.io/npm/dm/@staddress/client.svg)](https://www.npmjs.com/package/@staddress/client)
+[![provenance](https://img.shields.io/badge/provenance-SLSA-blue.svg)](https://www.npmjs.com/package/@staddress/client)
+[![license](https://img.shields.io/npm/l/@staddress/client.svg)](../../LICENSE)
+
 Staddress AI API 公式 Node.js / TypeScript SDK。
 
 ## ステータス
 
-**Phase 2 — v0.1 実装済み**（`parseAddress` / `parseBatch` / `getUsage`）
+**公開中**（`parseAddress` / `parseBatch` / `getUsage`）
 
 - 依存パッケージなし（Node.js 18+ のネイティブ `fetch` を使用）
 - ESM / CommonJS デュアルパッケージ、型定義同梱
+- `sideEffects: false`（バンドラのツリーシェイク対応）
+- GitHub Actions からの公開で provenance（SLSA）署名付き
 
 ## インストール
 
