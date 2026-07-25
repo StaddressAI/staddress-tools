@@ -110,6 +110,30 @@ jobs:
           ./packages/cli/install.sh --prefix "$HOME/.local/bin"
           "$HOME/.local/bin/staddress" version
 
+  node:
+    name: Node.js SDK (${{ matrix.node }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [18, 20, 22]
+    defaults:
+      run:
+        working-directory: packages/node
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+          cache-dependency-path: packages/node/package-lock.json
+
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+
   curl:
     name: curl sample (${{ matrix.os }})
     strategy:

@@ -1,6 +1,6 @@
 # Staddress クライアントツール群 開発計画
 
-**版数:** 0.3  
+**版数:** 0.4  
 **作成日:** 2026年6月  
 **参照:** [Staddress API リファレンス](https://staddress.com/api)  
 
@@ -214,11 +214,19 @@ staddress
 
 ---
 
-### 3.4 Node.js SDK（Phase 2）
+### 3.4 Node.js SDK（Phase 2）✅ v0.1 実装済み
 
 **目的:** Web アプリ、サーバーレス、AI エージェント（TypeScript）から利用。
 
 **配置:** `packages/node/`
+
+**実装状況（v0.1）:**
+
+- `src/client.ts`（`StaddressClient`: `parseAddress` / `parseBatch` / `getUsage`、タイムアウト・AbortController 対応）
+- `src/errors.ts`（`StaddressError`: `code` / `httpStatus` / `requestId` / `retryAfter`）
+- `src/types.ts`（OpenAPI 準拠の型を公開）
+- 依存パッケージなし（Node 18+ ネイティブ `fetch`）、tsup による ESM/CJS デュアル + 型定義出力
+- `test/client.test.ts`（vitest + fetch モック、14 ケース）
 
 **パッケージ名（案）:** `@staddress/client`
 
@@ -264,8 +272,8 @@ const usage = await client.getUsage();
 
 - TypeScript 5+
 - 依存: なし（`fetch` ネイティブ、Node 18+）または `undici`（Node 16 互換が必要な場合）
-- ビルド: `tsup` / `tsc`
-- テスト: `vitest` + MSW（Mock Service Worker）
+- ビルド: `tsup`（ESM/CJS + 型定義）
+- テスト: `vitest`（`fetch` をモック化。MSW は依存追加を避けるため v0.1 では不採用）
 - 型: API レスポンスの TypeScript 型を `src/types.ts` で公開
 
 **公開:**
@@ -462,7 +470,7 @@ tests/
 | **0** | 2026年6月 第1週 | curl サンプル、OpenAPI、本計画書、README（完了） |
 | **0** | 2026年6月 第2週 | PowerShell サンプル（Windows 向け）（完了） |
 | **1** | 2026年6月 第2–3週 | Shell CLI v0.1（parse / usage / batch / config）（完了） |
-| **2** | 2026年7月 第1–2週 | Node.js SDK v0.1 + npm 公開準備 |
+| **2** | 2026年7月 第1–2週 | Node.js SDK v0.1 + npm 公開準備（完了） |
 | **3** | 2026年7月 第3–4週 | Python SDK v0.1 + PyPI 公開準備 |
 | **4** | 2026年8月 第1週 | Ruby Gem v0.1 |
 | **5** | 2026年8月 第2週 | Go / PHP（需要確認後） |
@@ -504,7 +512,10 @@ staddress-tools/
 │   ├── node/
 │   │   ├── README.md
 │   │   ├── package.json
-│   │   └── src/
+│   │   ├── tsconfig.json
+│   │   ├── tsup.config.ts
+│   │   ├── src/                   # index.ts, client.ts, errors.ts, types.ts
+│   │   └── test/client.test.ts
 │   ├── python/
 │   │   ├── README.md
 │   │   ├── pyproject.toml
@@ -525,7 +536,7 @@ staddress-tools/
 
 | # | 項目 | 選択肢 |
 |---|------|--------|
-| 1 | npm scope | `@staddress/client` vs `@staddressai/client` |
+| 1 | ~~npm scope~~（確定） | **`@staddress/client`** に決定。`publishConfig.access=public` / `provenance=true` を設定済み。GitHub Release で自動公開（`.github/workflows/publish-node.yml`、要 `NPM_TOKEN`） |
 | 2 | CLI 配布 | install.sh のみ vs Homebrew tap |
 | 3 | 公開レジストリ | npm / PyPI を公式アカウントで公開するか |
 | 4 | v0 API サポート | `POST /api/v0/addresses/parse` を SDK に含めるか |
@@ -540,3 +551,4 @@ staddress-tools/
 | 0.1 | 2026-06-19 | 初版（ツール群計画・ディレクトリ構成） |
 | 0.2 | 2026-06-28 | curl サンプル完了。PowerShell サンプル（Windows 向け）の計画を追加 |
 | 0.3 | 2026-07-25 | Shell CLI v0.1 実装完了（parse / batch / usage / config、install.sh、単体テスト） |
+| 0.4 | 2026-07-25 | Node.js SDK v0.1 実装完了（StaddressClient、StaddressError、型定義、vitest） |
