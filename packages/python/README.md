@@ -4,7 +4,7 @@ Staddress AI API 公式 Python SDK。
 
 ## ステータス
 
-**Phase 3 — v0.1 実装済み**（`parse_address` / `parse_batch` / `get_usage`、同期・非同期対応）
+**Phase 3 — v0.1 公開済み**（[PyPI: staddress](https://pypi.org/project/staddress/)。`parse_address` / `parse_batch` / `get_usage`、同期・非同期対応）
 
 - HTTP: `httpx`（sync + async）
 - 型: `pydantic` v2 モデル（`py.typed` 同梱）

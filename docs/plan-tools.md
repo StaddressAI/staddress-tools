@@ -284,11 +284,13 @@ const usage = await client.getUsage();
 
 ---
 
-### 3.5 Python SDK（Phase 3）✅ v0.1 実装済み
+### 3.5 Python SDK（Phase 3）✅ v0.1 公開済み（PyPI: staddress 0.1.0）
 
 **目的:** データパイプライン、バッチ処理、FastAPI エージェントから利用。
 
 **配置:** `packages/python/`
+
+**公開:** [PyPI: staddress](https://pypi.org/project/staddress/)（Trusted Publishing。タグ `py-v0.1.0` push で `publish-python.yml` が自動公開）
 
 **実装状況（v0.1）:**
 
@@ -479,7 +481,7 @@ tests/
 | **0** | 2026年6月 第2週 | PowerShell サンプル（Windows 向け）（完了） |
 | **1** | 2026年6月 第2–3週 | Shell CLI v0.1（parse / usage / batch / config）（完了） |
 | **2** | 2026年7月 第1–2週 | Node.js SDK v0.1 + npm 公開準備（完了） |
-| **3** | 2026年7月 第3–4週 | Python SDK v0.1 + PyPI 公開準備（完了） |
+| **3** | 2026年7月 第3–4週 | Python SDK v0.1 + PyPI 公開（完了・公開済み） |
 | **4** | 2026年8月 第1週 | Ruby Gem v0.1 |
 | **5** | 2026年8月 第2週 | Go / PHP（需要確認後） |
 | **6** | 2026年8月–9月 | AI エージェント本体 |
@@ -562,3 +564,4 @@ staddress-tools/
 | 0.3 | 2026-07-25 | Shell CLI v0.1 実装完了（parse / batch / usage / config、install.sh、単体テスト） |
 | 0.4 | 2026-07-25 | Node.js SDK v0.1 実装完了（StaddressClient、StaddressError、型定義、vitest） |
 | 0.5 | 2026-08-09 | Python SDK v0.1 実装完了（同期/非同期クライアント、pydantic v2、pytest） |
+| 0.6 | 2026-08-09 | Python SDK v0.1 を PyPI 公開（staddress 0.1.0、Trusted Publishing）。公開トリガーをタグ方式（py-v* / node-v*）へ変更 |
