@@ -10,6 +10,8 @@ name: publish-node
 jobs:
   publish:
     name: Publish @staddress/client to npm
+    # node-v* タグの Release、または手動実行のときだけ公開する
+    if: ${{ github.event_name == 'workflow_dispatch' || startsWith(github.event.release.tag_name, 'node-v') }}
     runs-on: ubuntu-latest
     permissions:
       contents: read

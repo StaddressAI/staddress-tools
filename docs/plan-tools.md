@@ -1,6 +1,6 @@
 # Staddress クライアントツール群 開発計画
 
-**版数:** 0.4  
+**版数:** 0.5  
 **作成日:** 2026年6月  
 **参照:** [Staddress API リファレンス](https://staddress.com/api)  
 
@@ -284,11 +284,18 @@ const usage = await client.getUsage();
 
 ---
 
-### 3.5 Python SDK（Phase 3）
+### 3.5 Python SDK（Phase 3）✅ v0.1 実装済み
 
 **目的:** データパイプライン、バッチ処理、FastAPI エージェントから利用。
 
 **配置:** `packages/python/`
+
+**実装状況（v0.1）:**
+
+- `src/staddress/client.py`（`StaddressClient` 同期 + `StaddressAsyncClient` 非同期、`parse_address` / `parse_batch` / `get_usage`、タイムアウト・コンテキストマネージャ対応）
+- `src/staddress/errors.py`（`StaddressError`: `code` / `http_status` / `request_id` / `retry_after`）
+- `src/staddress/models.py`（pydantic v2、camelCase↔snake_case alias、`py.typed` 同梱）
+- HTTP は `httpx`、`tests/test_client.py`（pytest + `httpx.MockTransport`、同期/非同期 16 ケース）
 
 **パッケージ名（案）:** `staddress`
 
@@ -329,8 +336,8 @@ usage = client.get_usage()
 - Python 3.11+
 - HTTP: `httpx`（sync + async 両対応）
 - 型: `pydantic` v2 モデル
-- テスト: `pytest` + `pytest-httpx` / `respx`
-- 配布: PyPI
+- テスト: `pytest` + `httpx.MockTransport`（実 API 不要。追加依存を避けるため pytest-httpx/respx は不採用）
+- 配布: PyPI（trusted publishing）
 
 **追加:** `StaddressAsyncClient` を async/await 用に提供。
 
@@ -472,7 +479,7 @@ tests/
 | **0** | 2026年6月 第2週 | PowerShell サンプル（Windows 向け）（完了） |
 | **1** | 2026年6月 第2–3週 | Shell CLI v0.1（parse / usage / batch / config）（完了） |
 | **2** | 2026年7月 第1–2週 | Node.js SDK v0.1 + npm 公開準備（完了） |
-| **3** | 2026年7月 第3–4週 | Python SDK v0.1 + PyPI 公開準備 |
+| **3** | 2026年7月 第3–4週 | Python SDK v0.1 + PyPI 公開準備（完了） |
 | **4** | 2026年8月 第1週 | Ruby Gem v0.1 |
 | **5** | 2026年8月 第2週 | Go / PHP（需要確認後） |
 | **6** | 2026年8月–9月 | AI エージェント本体 |
@@ -520,7 +527,8 @@ staddress-tools/
 │   ├── python/
 │   │   ├── README.md
 │   │   ├── pyproject.toml
-│   │   └── src/staddress/
+│   │   ├── src/staddress/         # __init__.py, client.py, errors.py, models.py, py.typed
+│   │   └── tests/test_client.py
 │   └── ruby/
 │       ├── README.md
 │       ├── staddress.gemspec
@@ -553,3 +561,4 @@ staddress-tools/
 | 0.2 | 2026-06-28 | curl サンプル完了。PowerShell サンプル（Windows 向け）の計画を追加 |
 | 0.3 | 2026-07-25 | Shell CLI v0.1 実装完了（parse / batch / usage / config、install.sh、単体テスト） |
 | 0.4 | 2026-07-25 | Node.js SDK v0.1 実装完了（StaddressClient、StaddressError、型定義、vitest） |
+| 0.5 | 2026-08-09 | Python SDK v0.1 実装完了（同期/非同期クライアント、pydantic v2、pytest） |

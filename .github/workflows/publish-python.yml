@@ -1,0 +1,44 @@
+name: publish-python
+
+# GitHub Release を publish したときに staddress (Python) を PyPI に公開する。
+# 認証は PyPI の Trusted Publishing（OIDC）を使用（API トークン不要）。
+# 事前に PyPI 側で本リポジトリ／ワークフローを信頼できる発行元として登録すること。
+"on":
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  publish:
+    name: Publish staddress to PyPI
+    # py-v* タグの Release、または手動実行のときだけ公開する
+    if: ${{ github.event_name == 'workflow_dispatch' || startsWith(github.event.release.tag_name, 'py-v') }}
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write # Trusted Publishing (OIDC) 用
+    defaults:
+      run:
+        working-directory: packages/python
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Sync (dev)
+        run: uv sync --extra dev --python 3.12
+
+      - name: Ruff
+        run: uv run ruff check .
+
+      - name: Pytest
+        run: uv run pytest -q
+
+      - name: Build
+        run: uv build
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: packages/python/dist

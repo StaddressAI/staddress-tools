@@ -134,6 +134,34 @@ jobs:
       - run: npm test
       - run: npm run build
 
+  python:
+    name: Python SDK (${{ matrix.python }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.12", "3.13"]
+    defaults:
+      run:
+        working-directory: packages/python
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Sync (dev)
+        run: uv sync --extra dev --python ${{ matrix.python }}
+
+      - name: Ruff
+        run: uv run ruff check .
+
+      - name: Pytest
+        run: uv run pytest -q
+
+      - name: Build
+        run: uv build
+
   curl:
     name: curl sample (${{ matrix.os }})
     strategy:
