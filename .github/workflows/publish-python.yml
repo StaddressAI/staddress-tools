@@ -4,15 +4,14 @@ name: publish-python
 # 認証は PyPI の Trusted Publishing（OIDC）を使用（API トークン不要）。
 # 事前に PyPI 側で本リポジトリ／ワークフローを信頼できる発行元として登録すること。
 "on":
-  release:
-    types: [published]
+  push:
+    tags:
+      - "py-v*"
   workflow_dispatch:
 
 jobs:
   publish:
     name: Publish staddress to PyPI
-    # py-v* タグの Release、または手動実行のときだけ公開する
-    if: ${{ github.event_name == 'workflow_dispatch' || startsWith(github.event.release.tag_name, 'py-v') }}
     runs-on: ubuntu-latest
     environment: pypi
     permissions:
