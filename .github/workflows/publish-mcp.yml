@@ -1,0 +1,42 @@
+name: publish-mcp
+
+# バージョンタグ（mcp-v*）を push したときに @staddress/mcp を npm に公開する。
+# 事前に npm の Automation トークンを Secrets に NPM_TOKEN として登録すること。
+"on":
+  push:
+    tags:
+      - "mcp-v*"
+  workflow_dispatch:
+
+jobs:
+  publish:
+    name: Publish @staddress/mcp to npm
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # npm provenance 用
+    defaults:
+      run:
+        working-directory: packages/mcp
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org
+          cache: npm
+          cache-dependency-path: packages/mcp/package-lock.json
+
+      - run: npm ci
+
+      - run: npm run typecheck
+
+      - run: npm test
+
+      - run: npm run build
+
+      # publishConfig.access=public / provenance=true は package.json 側で指定済み
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

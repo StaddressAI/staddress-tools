@@ -31,7 +31,8 @@ staddress-tools/
 │   ├── cli/                  # staddress シェルコマンド
 │   ├── node/                 # Node.js SDK (@staddress/client)
 │   ├── python/               # Python SDK (staddress)
-│   └── ruby/                 # Ruby Gem (staddress)
+│   ├── ruby/                 # Ruby Gem (staddress)
+│   └── mcp/                  # MCP サーバー (@staddress/mcp)
 ├── agent/                    # 汎用 AI エージェント
 └── tests/                    # 横断テスト・フィクスチャ
 ```
@@ -96,8 +97,9 @@ Node.js / Python / Ruby などの SDK を順次提供予定です（[開発ロ�
 | 4 | Node.js SDK | 完了（[npm 公開](https://www.npmjs.com/package/@staddress/client)） |
 | 5 | Python SDK | 完了（[PyPI 公開](https://pypi.org/project/staddress/)） |
 | 6 | Ruby SDK | 完了（[RubyGems 公開](https://rubygems.org/gems/staddress)） |
-| 7 | その他言語（Go / PHP 等） | 計画中 |
-| 8 | 汎用 AI エージェント | 未着手 |
+| 7 | MCP サーバー（`@staddress/mcp`） | 完了（Cursor / Claude 対応） |
+| 8 | その他言語（Go / PHP 等） | 計画中 |
+| 9 | 汎用 AI エージェント | 未着手 |
 
 ## ライセンス
 

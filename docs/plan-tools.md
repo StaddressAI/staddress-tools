@@ -23,6 +23,7 @@
 | 6 | **Ruby Gem** | gem | `Staddress::Client.new` |
 | 7 | **Go module**（Phase 5） | go get | `staddress.NewClient()` |
 | 8 | **PHP Composer**（Phase 5） | packagist | 同上 |
+| 9 | **MCP サーバー** | npm `@staddress/mcp` | `npx -y @staddress/mcp`（Cursor / Claude から住所解析ツールを利用） |
 
 ---
 
@@ -460,6 +461,16 @@ tests/
 
 ## 5. AI エージェントとの関係（Phase 6）
 
+### 5.0 MCP サーバー ✅ v0.1 実装済み（`packages/mcp` / `@staddress/mcp`）
+
+Staddress API を **Model Context Protocol (MCP)** のツールとして公開するサーバを実装済み。Cursor / Claude Desktop / ChatGPT など MCP 対応クライアントから住所解析ツールを呼び出せる。
+
+- 実装: `packages/mcp`（TypeScript、`@modelcontextprotocol/sdk`、stdio トランスポート）
+- 内部で **Node.js SDK（`@staddress/client`）** を利用（下図の Tool 実装層）
+- ツール: `staddress_parse` / `staddress_parse_batch` / `staddress_get_usage`（すべて読み取り専用）
+- 配布: npm `@staddress/mcp`（`npx -y @staddress/mcp` で起動）。公開はタグ `mcp-v*` push で `publish-mcp.yml`
+- 設定: 環境変数 `STADDRESS_API_KEY` / `STADDRESS_BASE_URL`。詳細は `packages/mcp/README.md`
+
 汎用 AI エージェント（`agent/`）は、内部で **Python SDK または Node.js SDK** を Tool 実装層として利用する。
 
 ```
@@ -494,7 +505,7 @@ tests/
 | **4** | 2026年8月 第1週 | Ruby Gem v0.1（完了・公開済み） |
 | **5** | 2026年8月 第2週 | Go / PHP（需要確認後） |
 | **6** | 2026年8月–9月 | AI エージェント本体 |
-| **7** | 2026年9月–10月 | MCP / 連携仕様書 |
+| **7** | 2026年8月 | MCP サーバー（`@staddress/mcp`）（完了） |
 
 ---
 
@@ -576,3 +587,4 @@ staddress-tools/
 | 0.6 | 2026-08-09 | Python SDK v0.1 を PyPI 公開（staddress 0.1.0、Trusted Publishing）。公開トリガーをタグ方式（py-v* / node-v*）へ変更 |
 | 0.7 | 2026-08-15 | Ruby Gem v0.1 実装完了（Staddress::Client、net/http、rspec + webmock）。RubyGems 公開ワークフロー（ruby-v*）を追加 |
 | 0.8 | 2026-08-15 | Ruby Gem v0.1 を RubyGems 公開（staddress 0.1.0、Trusted Publishing） |
+| 0.9 | 2026-08-15 | MCP サーバー v0.1 実装（packages/mcp、@staddress/mcp）。parse/batch/usage の3ツールを stdio で公開、publish-mcp.yml（mcp-v*）を追加 |
