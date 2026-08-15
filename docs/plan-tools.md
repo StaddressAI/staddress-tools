@@ -345,11 +345,13 @@ usage = client.get_usage()
 
 ---
 
-### 3.6 Ruby Gem（Phase 4）✅ v0.1 実装済み
+### 3.6 Ruby Gem（Phase 4）✅ v0.1 公開済み（RubyGems: staddress 0.1.0）
 
 **目的:** Rails アプリ、Ruby バッチから利用。
 
 **配置:** `packages/ruby/`
+
+**公開:** [RubyGems: staddress](https://rubygems.org/gems/staddress)（Trusted Publishing。タグ `ruby-v0.1.0` push で `publish-ruby.yml` が自動公開）
 
 **実装状況（v0.1）:**
 
@@ -489,7 +491,7 @@ tests/
 | **1** | 2026年6月 第2–3週 | Shell CLI v0.1（parse / usage / batch / config）（完了） |
 | **2** | 2026年7月 第1–2週 | Node.js SDK v0.1 + npm 公開準備（完了） |
 | **3** | 2026年7月 第3–4週 | Python SDK v0.1 + PyPI 公開（完了・公開済み） |
-| **4** | 2026年8月 第1週 | Ruby Gem v0.1（完了） |
+| **4** | 2026年8月 第1週 | Ruby Gem v0.1（完了・公開済み） |
 | **5** | 2026年8月 第2週 | Go / PHP（需要確認後） |
 | **6** | 2026年8月–9月 | AI エージェント本体 |
 | **7** | 2026年9月–10月 | MCP / 連携仕様書 |
@@ -573,3 +575,4 @@ staddress-tools/
 | 0.5 | 2026-08-09 | Python SDK v0.1 実装完了（同期/非同期クライアント、pydantic v2、pytest） |
 | 0.6 | 2026-08-09 | Python SDK v0.1 を PyPI 公開（staddress 0.1.0、Trusted Publishing）。公開トリガーをタグ方式（py-v* / node-v*）へ変更 |
 | 0.7 | 2026-08-15 | Ruby Gem v0.1 実装完了（Staddress::Client、net/http、rspec + webmock）。RubyGems 公開ワークフロー（ruby-v*）を追加 |
+| 0.8 | 2026-08-15 | Ruby Gem v0.1 を RubyGems 公開（staddress 0.1.0、Trusted Publishing） |

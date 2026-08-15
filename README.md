@@ -89,7 +89,7 @@ Node.js / Python / Ruby などの SDK を順次提供予定です（[開発ロ�
 | 3 | Shell CLI | 完了 |
 | 4 | Node.js SDK | 完了（[npm 公開](https://www.npmjs.com/package/@staddress/client)） |
 | 5 | Python SDK | 完了（[PyPI 公開](https://pypi.org/project/staddress/)） |
-| 6 | Ruby SDK | 完了 |
+| 6 | Ruby SDK | 完了（[RubyGems 公開](https://rubygems.org/gems/staddress)） |
 | 7 | その他言語（Go / PHP 等） | 計画中 |
 | 8 | 汎用 AI エージェント | 未着手 |
 

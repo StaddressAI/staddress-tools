@@ -4,7 +4,7 @@ Staddress AI API 公式 Ruby SDK。
 
 ## ステータス
 
-**Phase 4 — v0.1 実装済み**（`parse_address` / `parse_batch` / `get_usage`）
+**Phase 4 — v0.1 公開済み**（[RubyGems: staddress](https://rubygems.org/gems/staddress)。`parse_address` / `parse_batch` / `get_usage`）
 
 - HTTP: 標準ライブラリ `net/http`（**ランタイム依存なし**）
 - Ruby 3.1+
