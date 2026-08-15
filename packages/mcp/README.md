@@ -6,6 +6,13 @@
 
 Staddress AI 住所解析 API を [Model Context Protocol (MCP)](https://modelcontextprotocol.io) のツールとして公開するサーバ。Cursor / Claude Desktop / ChatGPT などの MCP 対応クライアントから、住所の正規化・分解をツールとして呼び出せます。
 
+## ワンクリック導入
+
+[![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](cursor://anysphere.cursor-deeplink/mcp/install?name=staddress&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIkBzdGFkZHJlc3MvbWNwIl0sImVudiI6eyJTVEFERFJFU1NfQVBJX0tFWSI6IiJ9fQ==)
+[![Install in VS Code](https://img.shields.io/badge/VS_Code-Install_MCP-blue?logo=visualstudiocode&logoColor=white)](vscode:mcp/install?%7B%22name%22%3A%22staddress%22%2C%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22%40staddress%2Fmcp%22%5D%2C%22env%22%3A%7B%22STADDRESS_API_KEY%22%3A%22%24%7Binput%3Astaddress_api_key%7D%22%7D%7D)
+
+> ボタンで追加した後、`STADDRESS_API_KEY` に自分の API キーを設定してください（Cursor は `~/.cursor/mcp.json` の鉛筆アイコンから編集できます）。
+
 ## 提供ツール
 
 | ツール | 対応 API | 説明 |
@@ -88,5 +95,14 @@ npm run build     # dist/index.js（stdio 実行ファイル）を生成
 ```
 
 内部では公式 Node.js SDK [`@staddress/client`](../node/) を利用しています。
+
+## レジストリ掲載（露出向上）
+
+MCP ディレクトリに掲載されると継続的な流入が見込めます。
+
+- **Smithery**: リポジトリ直下に [`smithery.yaml`](../../smithery.yaml) を用意済み。[smithery.ai](https://smithery.ai) でリポジトリ `StaddressAI/staddress-tools` を接続すると掲載できます。
+- **mcp.so**: [mcp.so](https://mcp.so) の submit から npm パッケージ `@staddress/mcp` を登録。
+- **Cursor Directory**: [cursor.com/directory](https://cursor.com/directory) の MCP 一覧に申請。
+- **公式 MCP レジストリ**: [registry.modelcontextprotocol.io](https://registry.modelcontextprotocol.io)（`mcp-publisher` CLI で公開）。
 
 詳細: [docs/plan-tools.md §5](../../docs/plan-tools.md)

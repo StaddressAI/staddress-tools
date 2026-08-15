@@ -1,0 +1,30 @@
+# Smithery 掲載設定（MCP サーバー @staddress/mcp）
+# https://smithery.ai — リポジトリを接続するとこの設定でサーバを起動・掲載できる。
+startCommand:
+  type: stdio
+  configSchema:
+    type: object
+    required:
+      - staddressApiKey
+    properties:
+      staddressApiKey:
+        type: string
+        title: Staddress API Key
+        description: Staddress AI の API キー（X-Api-Key ヘッダに使用）
+      staddressBaseUrl:
+        type: string
+        title: Base URL
+        description: API のベース URL（省略時は https://api.staddress.com）
+        default: https://api.staddress.com
+  commandFunction: |-
+    (config) => ({
+      command: 'npx',
+      args: ['-y', '@staddress/mcp'],
+      env: {
+        STADDRESS_API_KEY: config.staddressApiKey,
+        STADDRESS_BASE_URL: config.staddressBaseUrl || 'https://api.staddress.com'
+      }
+    })
+  exampleConfig:
+    staddressApiKey: sk_example_xxx
+    staddressBaseUrl: https://api.staddress.com

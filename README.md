@@ -7,6 +7,8 @@
 [![MCP](https://img.shields.io/npm/v/@staddress/mcp.svg?label=npm%20%40staddress%2Fmcp)](https://www.npmjs.com/package/@staddress/mcp)
 [![license](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
+[![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](cursor://anysphere.cursor-deeplink/mcp/install?name=staddress&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIkBzdGFkZHJlc3MvbWNwIl0sImVudiI6eyJTVEFERFJFU1NfQVBJX0tFWSI6IiJ9fQ==)
+
 Staddress AI（ストアドレス）住所解析サービス向けの **クライアントツール群** および **汎用 AI エージェント** の開発リポジトリ。
 
 - 公式 API 仕様: [https://staddress.com/api](https://staddress.com/api)
