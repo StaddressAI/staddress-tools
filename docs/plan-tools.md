@@ -345,13 +345,20 @@ usage = client.get_usage()
 
 ---
 
-### 3.6 Ruby Gem（Phase 4）
+### 3.6 Ruby Gem（Phase 4）✅ v0.1 実装済み
 
 **目的:** Rails アプリ、Ruby バッチから利用。
 
 **配置:** `packages/ruby/`
 
-**Gem 名（案）:** `staddress`
+**実装状況（v0.1）:**
+
+- `lib/staddress/client.rb`（`Staddress::Client`、`parse_address` / `parse_batch` / `get_usage`、タイムアウト対応）
+- `lib/staddress/errors.rb`（`Staddress::Error`: `code` / `http_status` / `request_id` / `retry_after`）
+- `lib/staddress/models.rb`（camelCase→snake_case マッピング、未知フィールドは `#raw` から参照）
+- HTTP は標準 `net/http`（**ランタイム依存なし**）、`spec/`（rspec + webmock、15 ケース）
+
+**Gem 名:** `staddress`
 
 **インストール:**
 
@@ -385,9 +392,9 @@ usage = client.get_usage
 **技術スタック:**
 
 - Ruby 3.1+
-- HTTP: `faraday` または標準 `net/http`
-- テスト: `rspec` + `webmock`
-- 配布: RubyGems
+- HTTP: 標準 `net/http`（ランタイム依存を増やさないため faraday は不採用）
+- テスト: `rspec` + `webmock`（実 API 不要）
+- 配布: RubyGems（Trusted Publishing。タグ `ruby-v*` push で `publish-ruby.yml` が公開）
 
 ---
 
@@ -482,7 +489,7 @@ tests/
 | **1** | 2026年6月 第2–3週 | Shell CLI v0.1（parse / usage / batch / config）（完了） |
 | **2** | 2026年7月 第1–2週 | Node.js SDK v0.1 + npm 公開準備（完了） |
 | **3** | 2026年7月 第3–4週 | Python SDK v0.1 + PyPI 公開（完了・公開済み） |
-| **4** | 2026年8月 第1週 | Ruby Gem v0.1 |
+| **4** | 2026年8月 第1週 | Ruby Gem v0.1（完了） |
 | **5** | 2026年8月 第2週 | Go / PHP（需要確認後） |
 | **6** | 2026年8月–9月 | AI エージェント本体 |
 | **7** | 2026年9月–10月 | MCP / 連携仕様書 |
@@ -565,3 +572,4 @@ staddress-tools/
 | 0.4 | 2026-07-25 | Node.js SDK v0.1 実装完了（StaddressClient、StaddressError、型定義、vitest） |
 | 0.5 | 2026-08-09 | Python SDK v0.1 実装完了（同期/非同期クライアント、pydantic v2、pytest） |
 | 0.6 | 2026-08-09 | Python SDK v0.1 を PyPI 公開（staddress 0.1.0、Trusted Publishing）。公開トリガーをタグ方式（py-v* / node-v*）へ変更 |
+| 0.7 | 2026-08-15 | Ruby Gem v0.1 実装完了（Staddress::Client、net/http、rspec + webmock）。RubyGems 公開ワークフロー（ruby-v*）を追加 |

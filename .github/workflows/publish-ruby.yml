@@ -1,0 +1,45 @@
+name: publish-ruby
+
+# バージョンタグ（ruby-v*）を push したときに staddress (Ruby) を RubyGems に公開する。
+# 認証は RubyGems の Trusted Publishing（OIDC）を使用（API トークン不要）。
+# 事前に RubyGems 側で本リポジトリ／ワークフロー（publish-ruby.yml）と
+# 環境名 rubygems を信頼できる発行元として登録すること。
+"on":
+  push:
+    tags:
+      - "ruby-v*"
+  workflow_dispatch:
+
+jobs:
+  publish:
+    name: Publish staddress to RubyGems
+    runs-on: ubuntu-latest
+    environment: rubygems
+    permissions:
+      id-token: write # Trusted Publishing (OIDC) 用
+      contents: read
+    defaults:
+      run:
+        working-directory: packages/ruby
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+          working-directory: packages/ruby
+
+      - name: RSpec
+        run: bundle exec rspec
+
+      - name: Build gem
+        run: gem build staddress.gemspec
+
+      # OIDC で RubyGems の認証情報を構成（トークン不要）。
+      # 安定運用のためコミット SHA でのピン留めを推奨。
+      - name: Configure trusted publishing credentials
+        uses: rubygems/configure-rubygems-credentials@main
+
+      - name: Push to RubyGems
+        run: gem push staddress-*.gem
