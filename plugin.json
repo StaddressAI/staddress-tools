@@ -1,0 +1,14 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "staddress",
+  "version": "0.1.0",
+  "description": "Staddress AI 住所解析 API を MCP ツール（parse / batch / usage）として提供するプラグイン。",
+  "author": {
+    "name": "StaddressAI",
+    "url": "https://staddress.com"
+  },
+  "homepage": "https://staddress.com/api",
+  "repository": "https://github.com/StaddressAI/staddress-tools",
+  "license": "MIT",
+  "keywords": ["staddress", "address", "geocoding", "japan", "mcp"]
+}

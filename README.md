@@ -104,6 +104,13 @@ Node.js / Python / Ruby などの SDK を順次提供予定です（[開発ロ�
 | 8 | その他言語（Go / PHP 等） | 計画中 |
 | 9 | 汎用 AI エージェント | 未着手 |
 
+## Agent Plugins マニフェスト（Cursor Directory 等の自動検出用）
+
+リポジトリ直下の `plugin.json` と `mcp.json` は [Agent Plugins（Open Plugins）標準](https://open-plugins.com) のマニフェストです。Cursor Directory などのレジストリがこれを自動検出し、MCP サーバー `@staddress/mcp` をプラグインとして掲載します（**削除しないでください**）。
+
+- `plugin.json`: プラグイン名・メタデータ（`$schema` は Agent Plugins 1.0.0）
+- `mcp.json`: MCP サーバー定義（stdio、`npx -y @staddress/mcp`）。API キーは各クライアントの環境変数 `STADDRESS_API_KEY` で指定します。
+
 ## ライセンス
 
 [MIT License](LICENSE) © 2026 StaddressAI
