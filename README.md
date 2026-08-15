@@ -4,6 +4,7 @@
 [![npm](https://img.shields.io/npm/v/@staddress/client.svg?label=npm%20%40staddress%2Fclient)](https://www.npmjs.com/package/@staddress/client)
 [![PyPI](https://img.shields.io/pypi/v/staddress.svg?label=PyPI%20staddress)](https://pypi.org/project/staddress/)
 [![Gem](https://img.shields.io/gem/v/staddress.svg?label=gem%20staddress)](https://rubygems.org/gems/staddress)
+[![MCP](https://img.shields.io/npm/v/@staddress/mcp.svg?label=npm%20%40staddress%2Fmcp)](https://www.npmjs.com/package/@staddress/mcp)
 [![license](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 Staddress AI（ストアドレス）住所解析サービス向けの **クライアントツール群** および **汎用 AI エージェント** の開発リポジトリ。
@@ -97,7 +98,7 @@ Node.js / Python / Ruby などの SDK を順次提供予定です（[開発ロ�
 | 4 | Node.js SDK | 完了（[npm 公開](https://www.npmjs.com/package/@staddress/client)） |
 | 5 | Python SDK | 完了（[PyPI 公開](https://pypi.org/project/staddress/)） |
 | 6 | Ruby SDK | 完了（[RubyGems 公開](https://rubygems.org/gems/staddress)） |
-| 7 | MCP サーバー（`@staddress/mcp`） | 完了（Cursor / Claude 対応） |
+| 7 | MCP サーバー（`@staddress/mcp`） | 完了（[npm 公開](https://www.npmjs.com/package/@staddress/mcp)・Cursor / Claude 対応） |
 | 8 | その他言語（Go / PHP 等） | 計画中 |
 | 9 | 汎用 AI エージェント | 未着手 |
 

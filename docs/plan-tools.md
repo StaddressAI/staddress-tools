@@ -461,7 +461,7 @@ tests/
 
 ## 5. AI エージェントとの関係（Phase 6）
 
-### 5.0 MCP サーバー ✅ v0.1 実装済み（`packages/mcp` / `@staddress/mcp`）
+### 5.0 MCP サーバー ✅ v0.1 公開済み（[npm: @staddress/mcp](https://www.npmjs.com/package/@staddress/mcp)）
 
 Staddress API を **Model Context Protocol (MCP)** のツールとして公開するサーバを実装済み。Cursor / Claude Desktop / ChatGPT など MCP 対応クライアントから住所解析ツールを呼び出せる。
 
@@ -505,7 +505,7 @@ Staddress API を **Model Context Protocol (MCP)** のツールとして公開�
 | **4** | 2026年8月 第1週 | Ruby Gem v0.1（完了・公開済み） |
 | **5** | 2026年8月 第2週 | Go / PHP（需要確認後） |
 | **6** | 2026年8月–9月 | AI エージェント本体 |
-| **7** | 2026年8月 | MCP サーバー（`@staddress/mcp`）（完了） |
+| **7** | 2026年8月 | MCP サーバー（`@staddress/mcp`）（完了・公開済み） |
 
 ---
 
@@ -588,3 +588,4 @@ staddress-tools/
 | 0.7 | 2026-08-15 | Ruby Gem v0.1 実装完了（Staddress::Client、net/http、rspec + webmock）。RubyGems 公開ワークフロー（ruby-v*）を追加 |
 | 0.8 | 2026-08-15 | Ruby Gem v0.1 を RubyGems 公開（staddress 0.1.0、Trusted Publishing） |
 | 0.9 | 2026-08-15 | MCP サーバー v0.1 実装（packages/mcp、@staddress/mcp）。parse/batch/usage の3ツールを stdio で公開、publish-mcp.yml（mcp-v*）を追加 |
+| 1.0 | 2026-08-15 | MCP サーバー v0.1 を npm 公開（@staddress/mcp 0.1.0、provenance） |
