@@ -2,7 +2,8 @@
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "staddress",
   "version": "0.1.0",
-  "description": "Staddress AI 住所解析 API を MCP ツール（parse / batch / usage）として提供するプラグイン。",
+  "description": "日本語住所を AI で正規化・分解し、緯度経度・信頼度・住所コードを返す MCP ツール（parse / batch / usage）。表記ゆれや誤字も補正します。 | AI-powered MCP tools that normalize and parse Japanese addresses into structured components with lat/long and confidence, fixing typos and notation variants.",
+  "logo": "assets/staddress-icon.png",
   "author": {
     "name": "StaddressAI",
     "url": "https://staddress.com"
@@ -10,5 +11,16 @@
   "homepage": "https://staddress.com/api",
   "repository": "https://github.com/StaddressAI/staddress-tools",
   "license": "MIT",
-  "keywords": ["staddress", "address", "geocoding", "japan", "mcp"]
+  "keywords": [
+    "staddress",
+    "address",
+    "japanese-address",
+    "address-normalization",
+    "address-parsing",
+    "geocoding",
+    "japan",
+    "住所解析",
+    "住所正規化",
+    "mcp"
+  ]
 }

@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://raw.githubusercontent.com/StaddressAI/staddress-tools/main/assets/staddress-icon.png" alt="Staddress AI" width="96" height="96" />
+</p>
+
 # @staddress/mcp
 
 [![npm version](https://img.shields.io/npm/v/@staddress/mcp.svg)](https://www.npmjs.com/package/@staddress/mcp)
@@ -5,6 +9,14 @@
 [![license](https://img.shields.io/npm/l/@staddress/mcp.svg)](../../LICENSE)
 
 Staddress AI 住所解析 API を [Model Context Protocol (MCP)](https://modelcontextprotocol.io) のツールとして公開するサーバ。Cursor / Claude Desktop / ChatGPT などの MCP 対応クライアントから、住所の正規化・分解をツールとして呼び出せます。
+
+```mermaid
+flowchart LR
+    U["👤 ユーザー / User"] -->|"住所を正規化して"| A["🤖 AI (Cursor / Claude)"]
+    A -->|staddress_parse| M["@staddress/mcp"]
+    M -->|"POST /api/v1/addresses/parse"| API["Staddress AI API"]
+    API -->|"正規化住所・緯度経度・信頼度"| M --> A --> U
+```
 
 ## ワンクリック導入
 
@@ -76,9 +88,50 @@ STADDRESS_API_KEY=sk_xxx npx @modelcontextprotocol/inspector npx -y @staddress/m
 
 ## 使い方の例（AI への指示）
 
-> 「六本木ヒルズ 森タワー 52F を staddress で正規化して、緯度経度も教えて」
+チャットにこう入力するだけで、AI が自動的に `staddress_parse` を呼び出します。
 
-AI が `staddress_parse` を呼び出し、正規化住所・構成要素・信頼度・緯度経度を返します。
+> 「`東京都渋谷区道玄坂1-2 マンション桜 101号` を staddress で正規化して、緯度経度も教えて」
+
+**入力（表記ゆれ・番地混在）:**
+
+```text
+東京都渋谷区道玄坂1-2 マンション桜 101号
+```
+
+**AI が受け取るツールの戻り値（`staddress_parse`）:**
+
+```json
+{
+  "result": {
+    "normalized": "東京都渋谷区道玄坂一丁目2 マンション桜 101号",
+    "standard": "東京都渋谷区道玄坂1-2",
+    "components": {
+      "pref": "東京都",
+      "prefCode": "13",
+      "city": "渋谷区",
+      "cityCode": "13113",
+      "oazaCho": "道玄坂",
+      "chomeNumber": "1",
+      "streetNumberBlock": "2",
+      "buildingName": "マンション桜",
+      "roomNumber": "101",
+      "roomNumberUnit": "号",
+      "lat": 35.658034,
+      "lon": 139.699475,
+      "lgCode": "131130"
+    },
+    "confidence": {
+      "score": 0.98,
+      "matchLevel": "residential_block",
+      "query": "東京都渋谷区道玄坂1-2 マンション桜 101号"
+    }
+  }
+}
+```
+
+正規化住所・都道府県／市区町村コード・建物名・部屋番号・緯度経度・信頼度（`score` / `matchLevel`）まで、構造化データとして返ります。CSV 一括処理には `staddress_parse_batch` を使います。
+
+> 実行画面の GIF / スクリーンショットは近日追加予定です。
 
 ## エラー時の挙動
 

@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://raw.githubusercontent.com/StaddressAI/staddress-tools/main/assets/staddress-icon.png" alt="Staddress AI" width="96" height="96" />
+</p>
+
 # staddress-tools
 
 [![CI](https://github.com/StaddressAI/staddress-tools/actions/workflows/smoke.yml/badge.svg)](https://github.com/StaddressAI/staddress-tools/actions/workflows/smoke.yml)
@@ -108,7 +112,7 @@ Node.js / Python / Ruby などの SDK を順次提供予定です（[開発ロ�
 
 リポジトリ直下の `plugin.json` と `mcp.json` は [Agent Plugins（Open Plugins）標準](https://open-plugins.com) のマニフェストです。Cursor Directory などのレジストリがこれを自動検出し、MCP サーバー `@staddress/mcp` をプラグインとして掲載します（**削除しないでください**）。
 
-- `plugin.json`: プラグイン名・メタデータ（`$schema` は Agent Plugins 1.0.0）
+- `plugin.json`: プラグイン名・メタデータ（`$schema` は Agent Plugins 1.0.0）。訴求力のある日本語／英語併記の `description` と、レジストリ表示用アイコン `logo`（[`assets/staddress-icon.png`](assets/staddress-icon.png)）を設定済み。
 - `mcp.json`: MCP サーバー定義（stdio、`npx -y @staddress/mcp`）。API キーは各クライアントの環境変数 `STADDRESS_API_KEY` で指定します。
 
 ## ライセンス

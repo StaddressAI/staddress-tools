@@ -591,3 +591,4 @@ staddress-tools/
 | 1.0 | 2026-08-15 | MCP サーバー v0.1 を npm 公開（@staddress/mcp 0.1.0、provenance） |
 | 1.1 | 2026-08-15 | 露出施策: Add to Cursor / VS Code ワンクリック導入ボタン、Smithery 掲載用 smithery.yaml、レジストリ掲載手順を追加 |
 | 1.2 | 2026-08-15 | Cursor Directory 自動検出向けに Agent Plugins マニフェスト（plugin.json / mcp.json）をリポジトリ直下に追加 |
+| 1.3 | 2026-08-15 | 露出強化: ブランドアイコン（assets/staddress-icon.png）を追加し plugin.json に logo/日本語・英語併記の description を設定。MCP README にロゴ・処理フロー図・入力/出力の実行例を追加 |
