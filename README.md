@@ -1,5 +1,11 @@
 # staddress-tools
 
+[![CI](https://github.com/StaddressAI/staddress-tools/actions/workflows/smoke.yml/badge.svg)](https://github.com/StaddressAI/staddress-tools/actions/workflows/smoke.yml)
+[![npm](https://img.shields.io/npm/v/@staddress/client.svg?label=npm%20%40staddress%2Fclient)](https://www.npmjs.com/package/@staddress/client)
+[![PyPI](https://img.shields.io/pypi/v/staddress.svg?label=PyPI%20staddress)](https://pypi.org/project/staddress/)
+[![Gem](https://img.shields.io/gem/v/staddress.svg?label=gem%20staddress)](https://rubygems.org/gems/staddress)
+[![license](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+
 Staddress AI（ストアドレス）住所解析サービス向けの **クライアントツール群** および **汎用 AI エージェント** の開発リポジトリ。
 
 - 公式 API 仕様: [https://staddress.com/api](https://staddress.com/api)

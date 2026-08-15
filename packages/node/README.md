@@ -3,6 +3,7 @@
 [![npm version](https://img.shields.io/npm/v/@staddress/client.svg)](https://www.npmjs.com/package/@staddress/client)
 [![npm downloads](https://img.shields.io/npm/dm/@staddress/client.svg)](https://www.npmjs.com/package/@staddress/client)
 [![provenance](https://img.shields.io/badge/provenance-SLSA-blue.svg)](https://www.npmjs.com/package/@staddress/client)
+[![CI](https://github.com/StaddressAI/staddress-tools/actions/workflows/smoke.yml/badge.svg)](https://github.com/StaddressAI/staddress-tools/actions/workflows/smoke.yml)
 [![license](https://img.shields.io/npm/l/@staddress/client.svg)](../../LICENSE)
 
 Staddress AI API 公式 Node.js / TypeScript SDK。

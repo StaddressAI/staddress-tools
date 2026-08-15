@@ -1,5 +1,11 @@
 # staddress (Ruby Gem)
 
+[![Gem version](https://img.shields.io/gem/v/staddress.svg)](https://rubygems.org/gems/staddress)
+[![Gem downloads](https://img.shields.io/gem/dt/staddress.svg)](https://rubygems.org/gems/staddress)
+[![Ruby](https://img.shields.io/badge/ruby-%3E%3D%203.1-CC342D.svg)](https://rubygems.org/gems/staddress)
+[![CI](https://github.com/StaddressAI/staddress-tools/actions/workflows/smoke.yml/badge.svg)](https://github.com/StaddressAI/staddress-tools/actions/workflows/smoke.yml)
+[![license](https://img.shields.io/badge/license-MIT-green.svg)](../../LICENSE)
+
 Staddress AI API 公式 Ruby SDK。
 
 ## ステータス

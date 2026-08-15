@@ -1,5 +1,10 @@
 # Staddress CLI
 
+[![CI](https://github.com/StaddressAI/staddress-tools/actions/workflows/smoke.yml/badge.svg)](https://github.com/StaddressAI/staddress-tools/actions/workflows/smoke.yml)
+[![shell](https://img.shields.io/badge/shell-bash-4EAA25.svg?logo=gnu-bash&logoColor=white)](install.sh)
+[![deps](https://img.shields.io/badge/deps-curl%20%2B%20jq-lightgrey.svg)](#依存)
+[![license](https://img.shields.io/badge/license-MIT-green.svg)](../../LICENSE)
+
 ターミナルから Staddress AI API を呼び出す `staddress` コマンド。
 
 ## ステータス

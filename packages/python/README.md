@@ -1,5 +1,11 @@
 # staddress (Python)
 
+[![PyPI version](https://img.shields.io/pypi/v/staddress.svg)](https://pypi.org/project/staddress/)
+[![Python versions](https://img.shields.io/pypi/pyversions/staddress.svg)](https://pypi.org/project/staddress/)
+[![PyPI downloads](https://img.shields.io/pypi/dm/staddress.svg)](https://pypi.org/project/staddress/)
+[![CI](https://github.com/StaddressAI/staddress-tools/actions/workflows/smoke.yml/badge.svg)](https://github.com/StaddressAI/staddress-tools/actions/workflows/smoke.yml)
+[![license](https://img.shields.io/pypi/l/staddress.svg)](../../LICENSE)
+
 Staddress AI API 公式 Python SDK。
 
 ## ステータス
