@@ -2,16 +2,23 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StaddressClient } from '@staddress/client';
 import { z } from 'zod';
 
+import { requestAuth } from './requestAuth.js';
 import type { ClientFactory } from './tools.js';
 import * as tools from './tools.js';
 
 export const SERVER_NAME = 'staddress-mcp';
-export const SERVER_VERSION = '0.1.0';
+export const SERVER_VERSION = '0.2.0';
 
 const readOnly = { readOnlyHint: true, openWorldHint: true } as const;
 
-/** 環境変数 STADDRESS_API_KEY / STADDRESS_BASE_URL からクライアントを生成する。 */
+/**
+ * HTTP リクエストのヘッダ認証があればそれを使い、なければ環境変数から生成する。
+ */
 function defaultClientFactory(): StaddressClient {
+  const scoped = requestAuth.getStore();
+  if (scoped?.apiKey) {
+    return new StaddressClient({ apiKey: scoped.apiKey, baseUrl: scoped.baseUrl });
+  }
   return new StaddressClient();
 }
 

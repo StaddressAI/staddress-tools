@@ -470,7 +470,8 @@ Staddress API を **Model Context Protocol (MCP)** のツールとして公開�
 - ツール: `staddress_parse` / `staddress_parse_batch` / `staddress_get_usage`（すべて読み取り専用）
 - 配布: npm `@staddress/mcp`（`npx -y @staddress/mcp` で起動）。公開はタグ `mcp-v*` push で `publish-mcp.yml`
 - **Claude Desktop Extension（MCPB）**: `packages/mcp/mcpb/manifest.json`。`npm run mcpb:pack` で `staddress.mcpb` を生成し、同じタグの GitHub Release に添付。ダブルクリックまたは Settings → Extensions へドラッグして導入。API キーはインストール時の `user_config` で入力（OS キーチェーン保存）
-- 設定: 環境変数 `STADDRESS_API_KEY` / `STADDRESS_BASE_URL`。詳細は `packages/mcp/README.md`
+- 設定: 環境変数 `STADDRESS_API_KEY` / `STADDRESS_BASE_URL`。HTTP ではリクエストヘッダ `X-Api-Key` / `Authorization: Bearer`。詳細は `packages/mcp/README.md`
+- **Remote MCP（Streamable HTTP）**: `staddress-mcp --http`（`POST /mcp`、`GET /health`、server-card）。Smithery / Claude.ai Custom Connector 向け。公開 HTTPS へのデプロイが別途必要
 
 汎用 AI エージェント（`agent/`）は、内部で **Python SDK または Node.js SDK** を Tool 実装層として利用する。
 
@@ -602,3 +603,4 @@ staddress-tools/
 | 1.3 | 2026-08-15 | 露出強化: ブランドアイコン（assets/staddress-icon.png）を追加し plugin.json に logo/日本語・英語併記の description を設定。MCP README にロゴ・処理フロー図・入力/出力の実行例を追加 |
 | 1.4 | 2026-08-22 | Claude Desktop Extension（MCPB）: mcpb/manifest.json、pack-mcpb.sh、mcp-v* Release への .mcpb 添付。Privacy Policy 節と公式申請フォーム（clau.de/desktop-extention-submission）を追記 |
 | 1.5 | 2026-08-22 | mcp.so 申請（chatmcp/mcpso#3686）。Smithery Web は Streamable HTTP URL 必須のため見送り。次は remote MCP |
+| 1.6 | 2026-08-22 | Remote MCP（Streamable HTTP）を packages/mcp に追加。`--http` / Dockerfile / リクエスト単位の API キー |

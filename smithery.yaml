@@ -1,5 +1,6 @@
 # Smithery 掲載設定（MCP サーバー @staddress/mcp）
-# https://smithery.ai — リポジトリを接続するとこの設定でサーバを起動・掲載できる。
+# Web 申請（smithery.ai/servers/new）は公開 HTTPS の Streamable HTTP URL が必要。
+# ローカル stdio 用の起動定義（npx）。remote 公開後は https://<host>/mcp を申請する。
 startCommand:
   type: stdio
   configSchema:

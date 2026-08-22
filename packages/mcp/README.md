@@ -52,10 +52,39 @@ npm run mcpb:pack   # 同ディレクトリに staddress.mcpb を生成
 
 いずれも読み取り専用（`readOnlyHint`）です。
 
+## Remote MCP（Streamable HTTP）
+
+公開 URL が必要なクライアント（Smithery / Claude.ai Custom Connector / ChatGPT）向けに、同じツールを HTTP でも出せます。
+
+```bash
+npx -y @staddress/mcp --http
+# または
+STADDRESS_MCP_TRANSPORT=http PORT=8787 npx -y @staddress/mcp
+```
+
+| パス | 説明 |
+| --- | --- |
+| `POST /mcp` | Streamable HTTP（要 `X-Api-Key` または `Authorization: Bearer`） |
+| `GET /health` | ヘルスチェック |
+| `GET /.well-known/mcp/server-card.json` | Smithery 等向けの静的サーバカード |
+
+キー無しの `/mcp` は **401** を返します（403 にはしません）。
+
+Docker:
+
+```bash
+cd packages/mcp
+npm ci && npm run build
+docker build -t staddress-mcp .
+docker run --rm -p 8787:8787 staddress-mcp
+```
+
+Smithery の「MCP Server URL」には、デプロイ後の `https://<host>/mcp` を入れてください。stdio / `.mcpb` ではこの欄は使えません。
+
 ## 前提
 
 - Node.js 18 以上
-- Staddress AI の API キー（環境変数 `STADDRESS_API_KEY`）
+- Staddress AI の API キー（stdio は環境変数 `STADDRESS_API_KEY`、HTTP はリクエストヘッダ）
 
 ## クライアント設定
 
@@ -162,6 +191,7 @@ npm install
 npm run typecheck
 npm test          # vitest（ツールハンドラの単体テスト、実 API 不要）
 npm run build         # dist/index.js（stdio 実行ファイル）を生成
+npm run start:http    # Streamable HTTP（既定 http://0.0.0.0:8787/mcp）
 npm run mcpb:validate # Claude Desktop Extension の manifest.json を検証
 npm run mcpb:pack     # staddress.mcpb を梱包（依存を server/index.js に同梱）
 ```
@@ -172,7 +202,7 @@ npm run mcpb:pack     # staddress.mcpb を梱包（依存を server/index.js に
 
 MCP ディレクトリに掲載されると継続的な流入が見込めます。
 
-- **Smithery**: Web 申請（[smithery.ai/servers/new](https://smithery.ai/servers/new)）は **公開 HTTPS の Streamable HTTP URL 必須**。現状の stdio（`npx` / `.mcpb`）では出せない。remote MCP 実装後に再申請する。
+- **Smithery**: Web 申請（[smithery.ai/servers/new](https://smithery.ai/servers/new)）は **公開 HTTPS の Streamable HTTP URL**（`https://<host>/mcp`）が必要。ローカル確認は `npx @staddress/mcp --http`。本番 URL をデプロイしてから Continue する。
 - **mcp.so**: 申請済み（[chatmcp/mcpso#3686](https://github.com/chatmcp/mcpso/issues/3686)）。審査後に一覧へ反映。
 - **Cursor Directory**: [cursor.com/directory](https://cursor.com/directory) の MCP 一覧に申請。
 - **Claude Desktop Extensions**: `staddress.mcpb` を GitHub Release に添付。公式ディレクトリ掲載は [Desktop Extension 申請フォーム](https://clau.de/desktop-extention-submission)（手元インストールとは別審査）。

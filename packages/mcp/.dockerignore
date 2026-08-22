@@ -1,0 +1,12 @@
+node_modules
+.mcpb-stage
+*.mcpb
+src
+test
+mcpb
+scripts
+*.tsbuildinfo
+tsconfig.json
+tsup.config.ts
+tsup.mcpb.config.ts
+README.md
