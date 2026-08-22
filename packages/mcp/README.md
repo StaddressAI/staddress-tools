@@ -172,8 +172,8 @@ npm run mcpb:pack     # staddress.mcpb を梱包（依存を server/index.js に
 
 MCP ディレクトリに掲載されると継続的な流入が見込めます。
 
-- **Smithery**: リポジトリ直下に [`smithery.yaml`](../../smithery.yaml) を用意済み。[smithery.ai](https://smithery.ai) でリポジトリ `StaddressAI/staddress-tools` を接続すると掲載できます。
-- **mcp.so**: [mcp.so](https://mcp.so) の submit から npm パッケージ `@staddress/mcp` を登録。
+- **Smithery**: Web 申請（[smithery.ai/servers/new](https://smithery.ai/servers/new)）は **公開 HTTPS の Streamable HTTP URL 必須**。現状の stdio（`npx` / `.mcpb`）では出せない。remote MCP 実装後に再申請する。
+- **mcp.so**: 申請済み（[chatmcp/mcpso#3686](https://github.com/chatmcp/mcpso/issues/3686)）。審査後に一覧へ反映。
 - **Cursor Directory**: [cursor.com/directory](https://cursor.com/directory) の MCP 一覧に申請。
 - **Claude Desktop Extensions**: `staddress.mcpb` を GitHub Release に添付。公式ディレクトリ掲載は [Desktop Extension 申請フォーム](https://clau.de/desktop-extention-submission)（手元インストールとは別審査）。
 - **公式 MCP レジストリ**: [registry.modelcontextprotocol.io](https://registry.modelcontextprotocol.io)（`mcp-publisher` CLI で公開）。

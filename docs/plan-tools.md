@@ -601,3 +601,4 @@ staddress-tools/
 | 1.2 | 2026-08-15 | Cursor Directory 自動検出向けに Agent Plugins マニフェスト（plugin.json / mcp.json）をリポジトリ直下に追加 |
 | 1.3 | 2026-08-15 | 露出強化: ブランドアイコン（assets/staddress-icon.png）を追加し plugin.json に logo/日本語・英語併記の description を設定。MCP README にロゴ・処理フロー図・入力/出力の実行例を追加 |
 | 1.4 | 2026-08-22 | Claude Desktop Extension（MCPB）: mcpb/manifest.json、pack-mcpb.sh、mcp-v* Release への .mcpb 添付。Privacy Policy 節と公式申請フォーム（clau.de/desktop-extention-submission）を追記 |
+| 1.5 | 2026-08-22 | mcp.so 申請（chatmcp/mcpso#3686）。Smithery Web は Streamable HTTP URL 必須のため見送り。次は remote MCP |
