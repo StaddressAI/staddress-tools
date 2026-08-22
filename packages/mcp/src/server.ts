@@ -7,7 +7,7 @@ import type { ClientFactory } from './tools.js';
 import * as tools from './tools.js';
 
 export const SERVER_NAME = 'staddress-mcp';
-export const SERVER_VERSION = '0.2.0';
+export const SERVER_VERSION = '0.2.1';
 
 const readOnly = { readOnlyHint: true, openWorldHint: true } as const;
 

@@ -68,7 +68,7 @@ STADDRESS_MCP_TRANSPORT=http PORT=8787 npx -y @staddress/mcp
 | `GET /health` | ヘルスチェック |
 | `GET /.well-known/mcp/server-card.json` | Smithery 等向けの静的サーバカード |
 
-キー無しの `/mcp` は **401** を返します（403 にはしません）。
+`initialize` / `tools/list` はキー無しでも応答します（Smithery 等のスキャン用）。住所解析ツールの実行時にキーが無いとツール結果がエラーになります。キーは `X-Api-Key` または `Authorization: Bearer` で渡します。
 
 Docker:
 

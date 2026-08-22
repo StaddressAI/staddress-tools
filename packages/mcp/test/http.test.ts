@@ -51,16 +51,36 @@ describe('HTTP server', () => {
     expect(body.name).toBe(SERVER_NAME);
   });
 
-  it('キー無しの POST /mcp は 401 を返す', async () => {
+  it('キー無しでも initialize は 200 を返す（Smithery スキャン用）', async () => {
     const base = await listen();
     const res = await fetch(`${base}/mcp`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'initialize', params: {} }),
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json, text/event-stream',
+      },
+      body: JSON.stringify({
+        jsonrpc: '2.0',
+        id: 1,
+        method: 'initialize',
+        params: {
+          protocolVersion: '2025-03-26',
+          capabilities: {},
+          clientInfo: { name: 'vitest', version: '0' },
+        },
+      }),
     });
-    expect(res.status).toBe(401);
-    const body = (await res.json()) as { error: { code: string } };
-    expect(body.error.code).toBe('unauthorized');
+    expect(res.status).toBe(200);
+    const payload = (await res.json()) as { result?: { serverInfo?: { name: string } } };
+    expect(payload.result?.serverInfo?.name).toBe(SERVER_NAME);
+  });
+
+  it('OAuth 保護リソースメタデータを 200 で返す', async () => {
+    const base = await listen();
+    const res = await fetch(`${base}/.well-known/oauth-protected-resource/mcp`);
+    expect(res.status).toBe(200);
+    const body = (await res.json()) as { resource: string };
+    expect(body.resource).toContain('/mcp');
   });
 
   it('キー付き initialize でサーバ情報を返す', async () => {

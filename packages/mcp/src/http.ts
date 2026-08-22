@@ -65,6 +65,23 @@ function serverCard(): Record<string, unknown> {
   };
 }
 
+function publicOrigin(req: IncomingMessage): string {
+  const forwarded = req.headers['x-forwarded-proto'];
+  const proto = (Array.isArray(forwarded) ? forwarded[0] : forwarded)?.split(',')[0]?.trim() || 'https';
+  const host = (Array.isArray(req.headers.host) ? req.headers.host[0] : req.headers.host) || 'mcp.staddress.com';
+  return `${proto}://${host}`;
+}
+
+/** RFC 9728。OAuth AS は持たない。API キーはヘッダで渡す。 */
+function oauthProtectedResource(req: IncomingMessage): Record<string, unknown> {
+  const origin = publicOrigin(req);
+  return {
+    resource: `${origin}/mcp`,
+    resource_documentation: 'https://staddress.com/api',
+    bearer_methods_supported: ['header'],
+  };
+}
+
 async function handleMcp(req: IncomingMessage, res: ServerResponse): Promise<void> {
   applyCors(res);
 
@@ -74,26 +91,23 @@ async function handleMcp(req: IncomingMessage, res: ServerResponse): Promise<voi
     return;
   }
 
+  // initialize / tools/list はキー無しで通す。
+  // /mcp 全体を 401 にすると Smithery が OAuth 発見を始め、失敗する。
   const apiKey = extractApiKey(req.headers);
-  if (!apiKey) {
-    res.setHeader('WWW-Authenticate', 'Bearer realm="staddress", charset="UTF-8"');
-    sendJson(res, 401, {
-      error: {
-        code: 'unauthorized',
-        message: 'API キーが必要です。X-Api-Key または Authorization: Bearer を指定してください。',
-      },
-    });
-    return;
-  }
-
   const mcp = createMcpServer();
   const transport = new StreamableHTTPServerTransport({
     sessionIdGenerator: undefined,
     enableJsonResponse: true,
   });
   await mcp.connect(transport);
+
+  const dispatch = () => transport.handleRequest(req, res);
   try {
-    await requestAuth.run({ apiKey }, () => transport.handleRequest(req, res));
+    if (apiKey) {
+      await requestAuth.run({ apiKey }, dispatch);
+    } else {
+      await dispatch();
+    }
   } finally {
     await transport.close().catch(() => undefined);
     await mcp.close().catch(() => undefined);
@@ -120,6 +134,15 @@ export function createHttpListener(): Server {
 
       if (path === '/.well-known/mcp/server-card.json' && req.method === 'GET') {
         sendJson(res, 200, serverCard());
+        return;
+      }
+
+      if (
+        req.method === 'GET' &&
+        (path === '/.well-known/oauth-protected-resource' ||
+          path === '/.well-known/oauth-protected-resource/mcp')
+      ) {
+        sendJson(res, 200, oauthProtectedResource(req));
         return;
       }
 

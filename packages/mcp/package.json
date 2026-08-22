@@ -1,6 +1,6 @@
 {
   "name": "@staddress/mcp",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Model Context Protocol (MCP) server for the Staddress AI address parsing API (stdio and Streamable HTTP)",
   "author": "StaddressAI",
   "homepage": "https://staddress.com/api",
