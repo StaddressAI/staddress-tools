@@ -1,0 +1,19 @@
+[Unit]
+Description=staddress MCP (Streamable HTTP)
+After=network.target
+
+[Service]
+Type=simple
+User=appuser
+WorkingDirectory=/opt/staddress-mcp
+Environment=NODE_ENV=production
+Environment=STADDRESS_MCP_TRANSPORT=http
+Environment=HOST=127.0.0.1
+Environment=PORT=8787
+# 公開サーバに共通 API キーは置かない。利用者は X-Api-Key / Bearer で渡す。
+ExecStart=/usr/bin/node /opt/staddress-mcp/dist/index.js --http --host 127.0.0.1 --port 8787
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
