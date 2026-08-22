@@ -29,6 +29,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "start": "node dist/index.js",
+    "mcpb:validate": "npx --yes @anthropic-ai/mcpb validate mcpb/manifest.json",
+    "mcpb:pack": "bash scripts/pack-mcpb.sh",
     "prepublishOnly": "npm run build"
   },
   "keywords": [

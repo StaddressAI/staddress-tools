@@ -469,6 +469,7 @@ Staddress API を **Model Context Protocol (MCP)** のツールとして公開�
 - 内部で **Node.js SDK（`@staddress/client`）** を利用（下図の Tool 実装層）
 - ツール: `staddress_parse` / `staddress_parse_batch` / `staddress_get_usage`（すべて読み取り専用）
 - 配布: npm `@staddress/mcp`（`npx -y @staddress/mcp` で起動）。公開はタグ `mcp-v*` push で `publish-mcp.yml`
+- **Claude Desktop Extension（MCPB）**: `packages/mcp/mcpb/manifest.json`。`npm run mcpb:pack` で `staddress.mcpb` を生成し、同じタグの GitHub Release に添付。ダブルクリックまたは Settings → Extensions へドラッグして導入。API キーはインストール時の `user_config` で入力（OS キーチェーン保存）
 - 設定: 環境変数 `STADDRESS_API_KEY` / `STADDRESS_BASE_URL`。詳細は `packages/mcp/README.md`
 
 汎用 AI エージェント（`agent/`）は、内部で **Python SDK または Node.js SDK** を Tool 実装層として利用する。
@@ -551,10 +552,17 @@ staddress-tools/
 │   │   ├── pyproject.toml
 │   │   ├── src/staddress/         # __init__.py, client.py, errors.py, models.py, py.typed
 │   │   └── tests/test_client.py
-│   └── ruby/
+│   ├── ruby/
+│   │   ├── README.md
+│   │   ├── staddress.gemspec
+│   │   └── lib/staddress/
+│   └── mcp/
 │       ├── README.md
-│       ├── staddress.gemspec
-│       └── lib/staddress/
+│       ├── package.json
+│       ├── src/                   # index.ts, server.ts, tools.ts
+│       ├── mcpb/                  # Claude Desktop Extension（manifest.json / icon.png）
+│       ├── scripts/pack-mcpb.sh
+│       └── tsup.mcpb.config.ts
 ├── agent/                         # Phase 6
 │   └── README.md
 └── tests/
@@ -592,3 +600,4 @@ staddress-tools/
 | 1.1 | 2026-08-15 | 露出施策: Add to Cursor / VS Code ワンクリック導入ボタン、Smithery 掲載用 smithery.yaml、レジストリ掲載手順を追加 |
 | 1.2 | 2026-08-15 | Cursor Directory 自動検出向けに Agent Plugins マニフェスト（plugin.json / mcp.json）をリポジトリ直下に追加 |
 | 1.3 | 2026-08-15 | 露出強化: ブランドアイコン（assets/staddress-icon.png）を追加し plugin.json に logo/日本語・英語併記の description を設定。MCP README にロゴ・処理フロー図・入力/出力の実行例を追加 |
+| 1.4 | 2026-08-22 | Claude Desktop Extension（MCPB）: mcpb/manifest.json、pack-mcpb.sh、mcp-v* Release への .mcpb 添付。Privacy Policy 節と公式申請フォーム（clau.de/desktop-extention-submission）を追記 |

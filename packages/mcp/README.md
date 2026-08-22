@@ -23,7 +23,24 @@ flowchart LR
 [![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](cursor://anysphere.cursor-deeplink/mcp/install?name=staddress&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIkBzdGFkZHJlc3MvbWNwIl0sImVudiI6eyJTVEFERFJFU1NfQVBJX0tFWSI6IiJ9fQ==)
 [![Install in VS Code](https://img.shields.io/badge/VS_Code-Install_MCP-blue?logo=visualstudiocode&logoColor=white)](vscode:mcp/install?%7B%22name%22%3A%22staddress%22%2C%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22%40staddress%2Fmcp%22%5D%2C%22env%22%3A%7B%22STADDRESS_API_KEY%22%3A%22%24%7Binput%3Astaddress_api_key%7D%22%7D%7D)
 
-> ボタンで追加した後、`STADDRESS_API_KEY` に自分の API キーを設定してください（Cursor は `~/.cursor/mcp.json` の鉛筆アイコンから編集できます）。
+### Claude Desktop Extension（.mcpb）
+
+Claude Desktop では、設定ファイルを手で書かずに導入できます。
+
+1. [最新の `staddress.mcpb`](https://github.com/StaddressAI/staddress-tools/releases/latest/download/staddress.mcpb) をダウンロードする（`mcp-v*` タグの GitHub Release に添付されます）。
+2. ファイルをダブルクリックするか、Claude Desktop の **Settings → Extensions** にドラッグする。
+3. **Install** を押し、`Staddress API Key` に公式サイトで発行したキーを入れる。
+4. **Extensions のスイッチを On** にする（API キー未入力だと自動では有効になりません）。Claude Desktop を **Cmd+Q** で終了して再起動し、**新しいチャット**で使ってください。
+
+ローカルで梱包する場合:
+
+```bash
+cd packages/mcp
+npm install
+npm run mcpb:pack   # 同ディレクトリに staddress.mcpb を生成
+```
+
+> Cursor / VS Code のボタンで追加した後は、`STADDRESS_API_KEY` に自分の API キーを設定してください（Cursor は `~/.cursor/mcp.json` の鉛筆アイコンから編集できます）。
 
 ## 提供ツール
 
@@ -60,9 +77,9 @@ flowchart LR
 }
 ```
 
-### Claude Desktop
+### Claude Desktop（手動 JSON）
 
-`claude_desktop_config.json` に同様に追加します。
+ワンクリック導入は上の [Claude Desktop Extension](#claude-desktop-extensionmcpb) を推奨します。手動で入れる場合は `claude_desktop_config.json` に追加します。
 
 ```json
 {
@@ -144,7 +161,9 @@ cd packages/mcp
 npm install
 npm run typecheck
 npm test          # vitest（ツールハンドラの単体テスト、実 API 不要）
-npm run build     # dist/index.js（stdio 実行ファイル）を生成
+npm run build         # dist/index.js（stdio 実行ファイル）を生成
+npm run mcpb:validate # Claude Desktop Extension の manifest.json を検証
+npm run mcpb:pack     # staddress.mcpb を梱包（依存を server/index.js に同梱）
 ```
 
 内部では公式 Node.js SDK [`@staddress/client`](../node/) を利用しています。
@@ -156,6 +175,22 @@ MCP ディレクトリに掲載されると継続的な流入が見込めます�
 - **Smithery**: リポジトリ直下に [`smithery.yaml`](../../smithery.yaml) を用意済み。[smithery.ai](https://smithery.ai) でリポジトリ `StaddressAI/staddress-tools` を接続すると掲載できます。
 - **mcp.so**: [mcp.so](https://mcp.so) の submit から npm パッケージ `@staddress/mcp` を登録。
 - **Cursor Directory**: [cursor.com/directory](https://cursor.com/directory) の MCP 一覧に申請。
+- **Claude Desktop Extensions**: `staddress.mcpb` を GitHub Release に添付。公式ディレクトリ掲載は [Desktop Extension 申請フォーム](https://clau.de/desktop-extention-submission)（手元インストールとは別審査）。
 - **公式 MCP レジストリ**: [registry.modelcontextprotocol.io](https://registry.modelcontextprotocol.io)（`mcp-publisher` CLI で公開）。
 
 詳細: [docs/plan-tools.md §5](../../docs/plan-tools.md)
+
+## Privacy Policy
+
+本 MCP サーバー / Claude Desktop Extension は、ユーザーがツールに渡した**住所文字列**と API キーを、Staddress AI API（既定: `https://api.staddress.com`）へ送信します。解析結果（正規化住所・構成要素・緯度経度・信頼度など）をツール応答として返します。
+
+- **収集:** ツール引数の住所（および任意の郵便番号）。API キーは Claude Desktop が OS の秘密領域に保存し、拡張本体はディスクに書きません。
+- **利用:** 住所解析 API の呼び出しにのみ使用します。
+- **第三者提供:** リクエストは Staddress AI の運営会社（Japan Computer Business Consulting CO., LTD）が提供する API に送信されます。
+- **保管:** 本パッケージは住所をローカル永続化しません。API 側の保管・削除は下記ポリシーに従います。
+- **連絡先:** [お問い合わせ](https://www.staddress.com/contact) / [運営会社](https://www.jcbc.co.jp/ja)
+
+正式な取り扱いは次を参照してください。
+
+- [Staddress AI プライバシーポリシー](https://www.staddress.com/privacy)
+- [運営会社プライバシーポリシー](https://www.jcbc.co.jp/privacy-policy)

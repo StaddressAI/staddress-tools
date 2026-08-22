@@ -13,7 +13,7 @@ jobs:
     name: Publish @staddress/mcp to npm
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write # GitHub Release に .mcpb を添付するため
       id-token: write # npm provenance 用
     defaults:
       run:
@@ -40,3 +40,13 @@ jobs:
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Pack Claude Desktop Extension
+        run: npm run mcpb:pack
+
+      - name: Attach .mcpb to GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: packages/mcp/staddress.mcpb
+          generate_release_notes: true

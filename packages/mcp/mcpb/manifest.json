@@ -1,0 +1,93 @@
+{
+  "manifest_version": "0.3",
+  "name": "staddress",
+  "display_name": "Staddress AI",
+  "version": "0.1.0",
+  "description": "日本語住所を AI で正規化・分解し、緯度経度・信頼度・住所コードを返す MCP ツール。 | AI-powered Japanese address normalization with lat/long and confidence.",
+  "long_description": "Staddress AI（ストアドレス）の住所解析 API を Claude Desktop からワンクリックで使えるようにする Desktop Extension です。\n\n- **staddress_parse** — 単件の日本語住所を正規化・分解（都道府県・市区町村・番地・建物、緯度経度、信頼度）\n- **staddress_parse_batch** — 複数住所の一括解析（Standard プラン以上、最大100件）\n- **staddress_get_usage** — プラン・件数・クレジット残高を確認\n\n表記ゆれや誤字も補正します。インストール後、[公式サイト](https://www.staddress.com/) で取得した API キーを設定してください。API 通信先は既定で `https://api.staddress.com` です。",
+  "author": {
+    "name": "StaddressAI",
+    "url": "https://staddress.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/StaddressAI/staddress-tools.git"
+  },
+  "homepage": "https://staddress.com/api",
+  "documentation": "https://github.com/StaddressAI/staddress-tools/blob/main/packages/mcp/README.md",
+  "support": "https://github.com/StaddressAI/staddress-tools/issues",
+  "icon": "icon.png",
+  "server": {
+    "type": "node",
+    "entry_point": "server/index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": ["${__dirname}/server/index.js"],
+      "env": {
+        "STADDRESS_API_KEY": "${user_config.api_key}",
+        "STADDRESS_BASE_URL": "${user_config.base_url}"
+      }
+    }
+  },
+  "tools": [
+    {
+      "name": "staddress_parse",
+      "description": "日本語の住所文字列を正規化し、構成要素・緯度経度・信頼度を返す"
+    },
+    {
+      "name": "staddress_parse_batch",
+      "description": "複数の住所を一括解析する（Standard プラン以上、最大100件）"
+    },
+    {
+      "name": "staddress_get_usage",
+      "description": "API の利用状況（プラン・件数・クレジット）を取得する"
+    }
+  ],
+  "prompts": [
+    {
+      "name": "normalize_address",
+      "description": "日本語住所を正規化し、緯度経度と信頼度を返す",
+      "arguments": ["address"],
+      "text": "次の住所を staddress で正規化し、構成要素・緯度経度・信頼度を教えて: ${arguments.address}"
+    }
+  ],
+  "keywords": [
+    "staddress",
+    "address",
+    "japanese-address",
+    "address-normalization",
+    "geocoding",
+    "japan",
+    "住所解析",
+    "住所正規化",
+    "mcp"
+  ],
+  "license": "MIT",
+  "privacy_policies": [
+    "https://www.staddress.com/privacy",
+    "https://www.jcbc.co.jp/privacy-policy"
+  ],
+  "compatibility": {
+    "claude_desktop": ">=0.10.0",
+    "platforms": ["darwin", "win32", "linux"],
+    "runtimes": {
+      "node": ">=18.0.0"
+    }
+  },
+  "user_config": {
+    "api_key": {
+      "type": "string",
+      "title": "Staddress API Key",
+      "description": "公式サイトのアカウント管理画面で発行した API キー（X-Api-Key）",
+      "sensitive": true,
+      "required": true
+    },
+    "base_url": {
+      "type": "string",
+      "title": "API Base URL",
+      "description": "省略時は https://api.staddress.com",
+      "default": "https://api.staddress.com",
+      "required": false
+    }
+  }
+}
